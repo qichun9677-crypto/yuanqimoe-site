@@ -1,0 +1,46 @@
+---
+layout: default
+title: 关于我们
+permalink: /about/
+---
+<section class="shell detail-layout">
+  <div class="detail-media">
+    <img src="{{ site.data.about.image | relative_url }}" alt="{{ site.data.about.title }}">
+  </div>
+  <div class="detail-copy card">
+    <div class="meta-kicker">{{ site.data.about.eyebrow }}</div>
+    <h1>{{ site.data.about.title }}</h1>
+    <p class="lede">{{ site.data.about.summary }}</p>
+    <div class="button-row">
+      <a class="button" href="{{ site.data.about.cta_link | relative_url }}">{{ site.data.about.cta_label }}</a>
+      <a class="button button-secondary" href="{{ '/products/' | relative_url }}">浏览产品</a>
+    </div>
+  </div>
+</section>
+
+<section class="shell section">
+  <div class="page-card rich-text">
+    {{ site.data.about.story_html }}
+  </div>
+</section>
+
+<section class="shell section value-grid">
+  {% for item in site.data.about.values %}
+  <article class="value-card">
+    <div class="meta-kicker">About</div>
+    <h3>{{ item.title }}</h3>
+    <p class="meta-copy">{{ item.text }}</p>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="shell section">
+  <div class="page-card">
+    <div class="meta-kicker">CTA</div>
+    <h2 class="section-title">{{ site.data.about.cta_title }}</h2>
+    <p class="section-copy">{{ site.data.about.cta_text }}</p>
+    <div class="button-row">
+      <a class="button" href="{{ site.data.about.cta_link | relative_url }}">{{ site.data.about.cta_label }}</a>
+    </div>
+  </div>
+</section>

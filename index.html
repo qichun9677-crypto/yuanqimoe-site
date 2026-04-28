@@ -1,0 +1,112 @@
+---
+layout: default
+title: 首页
+permalink: /
+---
+{% assign featured_products = site.products | where: "featured", true | sort: "sort_order" %}
+<section class="shell hero">
+  <div class="card hero-copy">
+    <span class="eyebrow">{{ site.data.home.hero.eyebrow }}</span>
+    <h1>{{ site.data.home.hero.title }}</h1>
+    <p class="lede">{{ site.data.home.hero.summary }}</p>
+    <div class="button-row">
+      <a class="button" href="{{ site.data.home.hero.primary_link | relative_url }}">{{ site.data.home.hero.primary_label }}</a>
+      <a class="button button-secondary" href="{{ site.data.home.hero.secondary_link | relative_url }}">{{ site.data.home.hero.secondary_label }}</a>
+    </div>
+  </div>
+  <div class="card hero-visual">
+    <img src="{{ site.data.home.hero.image | relative_url }}" alt="{{ site.data.home.hero.title }}">
+    <div class="float-chip">
+      <div>
+        <strong>{{ site.data.home.hero.chip_title }}</strong>
+        <span>{{ site.data.home.hero.chip_text }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shell section">
+  <div class="section-header">
+    <div>
+      <div class="meta-kicker">Explore</div>
+      <h2 class="section-title">探索萌动世界</h2>
+    </div>
+    <p class="section-copy">首页分类卡、产品页分组和 Pages CMS 内容模型保持同一套结构。</p>
+  </div>
+  <div class="feature-grid">
+    {% for item in site.data.home.categories %}
+    <article class="feature-card" data-tone="{{ item.tone }}">
+      <div class="meta-kicker">{{ item.kicker }}</div>
+      <h3>{{ item.name }}</h3>
+      <p class="meta-copy">{{ item.description }}</p>
+      <a class="button button-secondary" href="{{ item.link | relative_url }}">{{ item.name }}</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="shell section story-shell">
+  <div class="story-visual">
+    <img src="{{ site.data.home.story.image | relative_url }}" alt="{{ site.data.home.story.title }}">
+  </div>
+  <div class="story-panel">
+    <div class="meta-kicker">{{ site.data.home.story.eyebrow }}</div>
+    <h2 class="section-title">{{ site.data.home.story.title }}</h2>
+    <p class="section-copy">{{ site.data.home.story.summary }}</p>
+    <div class="metric-grid">
+      {% for item in site.data.home.stats %}
+      <div class="stat-card">
+        <strong>{{ item.value }}</strong>
+        <span>{{ item.label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="shell section">
+  <div class="section-header">
+    <div>
+      <div class="meta-kicker">Featured</div>
+      <h2 class="section-title">{{ site.data.home.featured.title }}</h2>
+    </div>
+    <a class="button button-secondary" href="{{ '/products/' | relative_url }}">查看全部产品</a>
+  </div>
+  <div class="product-grid">
+    {% for product in featured_products limit: 4 %}
+    <article class="product-card">
+      <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
+      <div class="product-topline">
+        <div class="meta-kicker">{{ product.category }}</div>
+        <div class="price-badge">{{ product.price }}</div>
+      </div>
+      <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
+      <p class="product-meta">{{ product.teaser }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="shell section admin-preview">
+  <div class="section-header">
+    <div>
+      <div class="meta-kicker">Admin Entry</div>
+      <h2 class="section-title">Pages CMS 后台入口</h2>
+    </div>
+    <p class="section-copy">`/admin/` 会作为 GitHub Pages 部署后的后台入口页，负责识别仓库并跳转到官方 Pages CMS 编辑器。</p>
+  </div>
+  <div class="admin-grid">
+    <article class="admin-card">
+      <h3>内容模型</h3>
+      <p class="admin-copy">首页数据、关于页数据和产品集合都已拆成独立内容源。</p>
+    </article>
+    <article class="admin-card" data-tone="warning">
+      <h3>媒体路径</h3>
+      <p class="admin-copy">上传资源统一写入 <code>{{ site.data.site.media_path }}</code>。</p>
+    </article>
+    <article class="admin-card" data-tone="accent">
+      <h3>可视化编辑</h3>
+      <p class="admin-copy">通过 Pages CMS 的可视化表单与富文本能力继续维护品牌内容。</p>
+    </article>
+  </div>
+</section>

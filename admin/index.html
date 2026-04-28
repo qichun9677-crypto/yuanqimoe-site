@@ -1,0 +1,78 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ site.data.site.title }} /admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  </head>
+  <body>
+    <main class="site-main">
+      <section class="shell">
+        <div class="card page-card admin-shell">
+          <div>
+            <div class="meta-kicker">Admin Gateway</div>
+            <h1>{{ site.data.site.title }} /admin</h1>
+            <p class="section-copy">这个入口页会在 GitHub Pages 部署后作为后台跳板，尝试识别当前仓库并把你带到官方 Pages CMS 编辑器。</p>
+          </div>
+          <div class="admin-grid">
+            <article class="admin-card">
+              <h3>检测到的仓库</h3>
+              <p class="admin-copy" id="repoName">等待识别</p>
+            </article>
+            <article class="admin-card" data-tone="warning">
+              <h3>媒体路径</h3>
+              <p class="admin-copy">{{ site.data.site.media_path }}</p>
+            </article>
+            <article class="admin-card" data-tone="accent">
+              <h3>Pages CMS</h3>
+              <p class="admin-copy">官方可视化编辑器由 Pages CMS 提供，当前入口会直接跳转到其应用。</p>
+            </article>
+          </div>
+          <div class="admin-actions">
+            <a class="button" id="openCms" href="https://app.pagescms.org/" target="_blank" rel="noreferrer">打开 Pages CMS</a>
+            <a class="button button-secondary" href="{{ '/' | relative_url }}">返回前台</a>
+          </div>
+          <div class="note">{{ site.data.site.admin_note }}</div>
+        </div>
+      </section>
+    </main>
+    <script>
+      (function () {
+        var fallbackRepo = "{{ site.data.site.repo_hint }}";
+        function isRepoSlug(value) {
+          return /^[^\/\s]+\/[^\/\s]+$/.test(value || "");
+        }
+        function readRepoQuery() {
+          var params = new URLSearchParams(window.location.search);
+          var repo = params.get("repo");
+          return isRepoSlug(repo) ? repo : "";
+        }
+        function detectRepo() {
+          var queryRepo = readRepoQuery();
+          if (queryRepo) {
+            return queryRepo;
+          }
+          var host = window.location.hostname;
+          var pathSegments = window.location.pathname.split("/").filter(Boolean);
+          if (host.endsWith("github.io")) {
+            var owner = host.split(".")[0];
+            if (pathSegments.length > 0 && pathSegments[0] !== "admin") {
+              return owner + "/" + pathSegments[0];
+            }
+            return owner + "/" + owner + ".github.io";
+          }
+          return isRepoSlug(fallbackRepo) ? fallbackRepo : "";
+        }
+        var repo = detectRepo();
+        document.getElementById("repoName").textContent = repo || "首次登录后在 Pages CMS 中手动选择当前仓库";
+        document.getElementById("openCms").href = repo
+          ? "https://app.pagescms.org/?repo=" + encodeURIComponent(repo)
+          : "https://app.pagescms.org/";
+      })();
+    </script>
+  </body>
+</html>

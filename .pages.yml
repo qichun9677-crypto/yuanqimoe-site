@@ -1,0 +1,137 @@
+media:
+  input: assets/images/uploads
+  output: /assets/images/uploads
+
+content:
+  - name: site
+    label: 站点设置
+    type: file
+    path: _data/site.yml
+    format: yaml
+    fields:
+      - { name: title, label: 品牌名称, type: string, required: true }
+      - { name: tagline, label: 品牌副标题, type: string }
+      - { name: description, label: 站点描述, type: text }
+      - { name: email, label: 邮箱, type: string }
+      - { name: phone, label: 电话, type: string }
+      - { name: address, label: 地址, type: text }
+      - { name: repo_hint, label: 仓库占位, type: string }
+      - { name: media_path, label: 媒体目录, type: string }
+      - { name: admin_note, label: 管理提示, type: text }
+  - name: navigation
+    label: 导航配置
+    type: file
+    path: _data/navigation.yml
+    format: yaml
+    fields:
+      - name: header
+        label: 顶部导航
+        type: list
+        item:
+          type: object
+          fields:
+            - { name: title, label: 标题, type: string }
+            - { name: url, label: 链接, type: string }
+      - name: footer
+        label: 页脚导航
+        type: list
+        item:
+          type: object
+          fields:
+            - { name: title, label: 标题, type: string }
+            - { name: url, label: 链接, type: string }
+  - name: homepage
+    label: 首页内容
+    type: file
+    path: _data/home.yml
+    format: yaml
+    fields:
+      - name: hero
+        label: Hero 区块
+        type: object
+        fields:
+          - { name: eyebrow, label: 眉题, type: string }
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 摘要, type: text }
+          - { name: primary_label, label: 主按钮文案, type: string }
+          - { name: primary_link, label: 主按钮链接, type: string }
+          - { name: secondary_label, label: 次按钮文案, type: string }
+          - { name: secondary_link, label: 次按钮链接, type: string }
+          - { name: image, label: Hero 图片, type: image }
+          - { name: chip_title, label: 浮层标题, type: string }
+          - { name: chip_text, label: 浮层说明, type: text }
+      - name: categories
+        label: 分类卡片
+        type: list
+        item:
+          type: object
+          fields:
+            - { name: key, label: 锚点键, type: string }
+            - { name: name, label: 分类名, type: string }
+            - { name: kicker, label: 英文眉题, type: string }
+            - { name: description, label: 描述, type: text }
+            - { name: link, label: 跳转链接, type: string }
+            - { name: tone, label: 色调, type: select, options: [blush, gold, mint, default] }
+      - name: story
+        label: 品牌故事区块
+        type: object
+        fields:
+          - { name: eyebrow, label: 眉题, type: string }
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 摘要, type: text }
+          - { name: image, label: 故事图片, type: image }
+      - name: stats
+        label: 首页统计
+        type: list
+        item:
+          type: object
+          fields:
+            - { name: value, label: 数值, type: string }
+            - { name: label, label: 文案, type: string }
+      - name: featured
+        label: 首页精选区
+        type: object
+        fields:
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 摘要, type: text }
+  - name: about
+    label: 关于页
+    type: file
+    path: _data/about.yml
+    format: yaml
+    fields:
+      - { name: eyebrow, label: 眉题, type: string }
+      - { name: title, label: 标题, type: string }
+      - { name: summary, label: 摘要, type: text }
+      - { name: image, label: 主图, type: image }
+      - { name: story_html, label: 正文, type: rich-text }
+      - name: values
+        label: 价值卡片
+        type: list
+        item:
+          type: object
+          fields:
+            - { name: title, label: 标题, type: string }
+            - { name: text, label: 描述, type: text }
+      - { name: cta_title, label: CTA 标题, type: string }
+      - { name: cta_text, label: CTA 说明, type: text }
+      - { name: cta_link, label: CTA 链接, type: string }
+      - { name: cta_label, label: CTA 文案, type: string }
+  - name: products
+    label: 产品集合
+    type: collection
+    path: _products
+    filename: "{primary}.md"
+    format: yaml-frontmatter
+    view:
+      fields: [title, category, price, featured]
+    fields:
+      - { name: title, label: 名称, type: string, required: true }
+      - { name: category, label: 分类名, type: string, required: true }
+      - { name: category_key, label: 分类键, type: select, options: [journals, pens, stickers, storage], required: true }
+      - { name: price, label: 价格, type: string, required: true }
+      - { name: image, label: 产品图片, type: image, required: true }
+      - { name: featured, label: 首页推荐, type: boolean }
+      - { name: sort_order, label: 排序号, type: number }
+      - { name: teaser, label: 摘要, type: text }
+      - { name: body, label: 正文, type: rich-text }

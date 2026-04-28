@@ -1,0 +1,46 @@
+---
+layout: default
+title: 产品系列
+permalink: /products/
+---
+<section class="shell">
+  <div class="page-hero card">
+    <div class="meta-kicker">Product Series</div>
+    <h1>产品系列</h1>
+    <p class="page-intro">按照静态原型中的分类方式，把集合内容映射成 GitHub Pages 可直接渲染的产品页面。</p>
+  </div>
+</section>
+
+<section class="shell section">
+  <ul class="filter-list">
+    {% for item in site.data.home.categories %}
+    <li><a href="#{{ item.key }}">{{ item.name }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% for item in site.data.home.categories %}
+{% assign products = site.products | where: "category_key", item.key | sort: "sort_order" %}
+<section class="shell section" id="{{ item.key }}">
+  <div class="section-header">
+    <div>
+      <div class="meta-kicker">{{ item.kicker }}</div>
+      <h2 class="section-title">{{ item.name }}</h2>
+    </div>
+    <p class="section-copy">{{ item.description }}</p>
+  </div>
+  <div class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+      <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
+      <div class="product-topline">
+        <div class="meta-kicker">{{ product.category }}</div>
+        <div class="price-badge">{{ product.price }}</div>
+      </div>
+      <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
+      <p class="product-meta">{{ product.teaser }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}

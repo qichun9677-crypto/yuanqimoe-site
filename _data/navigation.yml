@@ -1,0 +1,14 @@
+header:
+  - title: 首页
+    url: /
+  - title: 产品系列
+    url: /products/
+  - title: 关于我们
+    url: /about/
+footer:
+  - title: 品牌故事
+    url: /about/
+  - title: 产品系列
+    url: /products/
+  - title: Pages CMS
+    url: /admin/

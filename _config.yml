@@ -1,0 +1,16 @@
+title: 元气萌动
+description: 元气萌动品牌站点与 GitHub Pages CMS 部署包
+url: "https://www.yuanqimoe.com"
+baseurl: ""
+markdown: kramdown
+permalink: pretty
+collections:
+  products:
+    output: true
+    permalink: /products/:name/
+defaults:
+  - scope:
+      path: ""
+      type: products
+    values:
+      layout: product

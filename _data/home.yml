@@ -1,0 +1,51 @@
+hero:
+  eyebrow: New Collection 2026
+  title: 记录生活的每一个小确幸
+  summary: 这套 GitHub Pages 版本延续了原型中的暖色纸感和编辑型布局，并把内容拆成可由 Pages CMS 持续维护的数据文件与产品集合。
+  primary_label: 浏览产品系列
+  primary_link: /products/
+  secondary_label: 品牌故事
+  secondary_link: /about/
+  image: /assets/images/hero-stationery.jpg
+  chip_title: GitHub Pages Ready
+  chip_text: 已包含 Pages CMS 配置、媒体目录与 admin 入口
+categories:
+  - key: journals
+    name: 手账本
+    kicker: Journals
+    description: 轻盈封面、细腻纸感，适合记录灵感和日常节奏。
+    link: /products/#journals
+    tone: blush
+  - key: pens
+    name: 书写笔
+    kicker: Pens
+    description: 从柔和渐变到细节配件，围绕舒适书写体验展开。
+    link: /products/#pens
+    tone: gold
+  - key: stickers
+    name: 贴纸胶带
+    kicker: Stickers
+    description: 用图案和色块给计划页、包装和桌面笔记留下小情绪。
+    link: /products/#stickers
+    tone: mint
+  - key: storage
+    name: 桌面收纳
+    kicker: Storage
+    description: 让书签、笔套和透明小包都有自己的秩序感。
+    link: /products/#storage
+    tone: default
+story:
+  eyebrow: Our Story
+  title: 文具不仅是工具，更是情感的容器。
+  summary: 你设计好的静态原型在这个版本里已经变成内容驱动结构。品牌文案、首页区块和产品卡片都可以直接在 Pages CMS 中继续维护，而不需要改模板代码。
+  image: /assets/images/story-journal.jpg
+stats:
+  - value: 100%
+    label: 页面结构已内容化
+  - value: 8+
+    label: 产品样例已建模
+  - value: /admin
+    label: 已生成后台入口
+featured:
+  title: 元气新品上架
+  summary: 首页精选自动读取标记为 featured 的产品文件。
