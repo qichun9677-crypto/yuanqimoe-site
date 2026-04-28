@@ -1,10 +1,8 @@
 title: 元气萌动
-tagline: Genki Bloom Pages CMS
-description: 将前台展示页和后台原型整理为一个可直接推送到 GitHub 仓库的 Pages CMS 品牌站点包。
+tagline: Yuanqi Moe
+description: 生活你好
 email: hello@yuanqimoe.com
 phone: 400-800-2026
 address: 上海市静安区创意办公示例地址 18 号
-copyright: © 2026 元气萌动. All rights reserved.
-repo_hint: ""
 media_path: assets/images/uploads
 admin_note: 当前包已绑定正式域名 www.yuanqimoe.com。首次进入 Pages CMS 时，如未自动识别仓库，请登录后手动选择当前仓库。
