@@ -15,6 +15,7 @@ content:
       - { name: email, label: 邮箱, type: string }
       - { name: phone, label: 电话, type: string }
       - { name: address, label: 地址, type: text }
+      - { name: copyright, label: 版权文案, type: string }
       - { name: repo_hint, label: 仓库占位, type: string }
       - { name: media_path, label: 媒体目录, type: string }
       - { name: admin_note, label: 管理提示, type: text }
@@ -60,6 +61,13 @@ content:
           - { name: image, label: Hero 图片, type: image }
           - { name: chip_title, label: 浮层标题, type: string }
           - { name: chip_text, label: 浮层说明, type: text }
+      - name: explore
+        label: 分类导览区
+        type: object
+        fields:
+          - { name: eyebrow, label: 眉题, type: string }
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 摘要, type: text }
       - name: categories
         label: 分类卡片
         type: list
@@ -72,6 +80,7 @@ content:
             - { name: description, label: 描述, type: text }
             - { name: link, label: 跳转链接, type: string }
             - { name: tone, label: 色调, type: select, options: [blush, gold, mint, default] }
+            - { name: sort_order, label: 排序号, type: number }
       - name: story
         label: 品牌故事区块
         type: object
@@ -94,6 +103,21 @@ content:
         fields:
           - { name: title, label: 标题, type: string }
           - { name: summary, label: 摘要, type: text }
+          - { name: button_label, label: 按钮文案, type: string }
+          - { name: button_link, label: 按钮链接, type: string }
+  - name: products_page
+    label: 产品页设置
+    type: file
+    path: _data/products_page.yml
+    format: yaml
+    fields:
+      - name: hero
+        label: 顶部说明
+        type: object
+        fields:
+          - { name: eyebrow, label: 眉题, type: string }
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 摘要, type: text }
   - name: about
     label: 关于页
     type: file
@@ -113,10 +137,24 @@ content:
           fields:
             - { name: title, label: 标题, type: string }
             - { name: text, label: 描述, type: text }
-      - { name: cta_title, label: CTA 标题, type: string }
-      - { name: cta_text, label: CTA 说明, type: text }
-      - { name: cta_link, label: CTA 链接, type: string }
-      - { name: cta_label, label: CTA 文案, type: string }
+            - { name: sort_order, label: 排序号, type: number }
+      - name: actions
+        label: 顶部按钮
+        type: object
+        fields:
+          - { name: primary_label, label: 主按钮文案, type: string }
+          - { name: primary_link, label: 主按钮链接, type: string }
+          - { name: secondary_label, label: 次按钮文案, type: string }
+          - { name: secondary_link, label: 次按钮链接, type: string }
+      - name: cta
+        label: 底部行动区
+        type: object
+        fields:
+          - { name: eyebrow, label: 眉题, type: string }
+          - { name: title, label: 标题, type: string }
+          - { name: text, label: 说明, type: text }
+          - { name: link, label: 链接, type: string }
+          - { name: label, label: 按钮文案, type: string }
   - name: products
     label: 产品集合
     type: collection
@@ -124,7 +162,7 @@ content:
     filename: "{primary}.md"
     format: yaml-frontmatter
     view:
-      fields: [title, category, price, featured]
+      fields: [title, category, price, featured, sort_order]
     fields:
       - { name: title, label: 名称, type: string, required: true }
       - { name: category, label: 分类名, type: string, required: true }
@@ -132,6 +170,7 @@ content:
       - { name: price, label: 价格, type: string, required: true }
       - { name: image, label: 产品图片, type: image, required: true }
       - { name: featured, label: 首页推荐, type: boolean }
-      - { name: sort_order, label: 排序号, type: number }
+      - { name: featured_rank, label: 首页精选排序号, type: number }
+      - { name: sort_order, label: 分类页排序号, type: number }
       - { name: teaser, label: 摘要, type: text }
       - { name: body, label: 正文, type: rich-text }

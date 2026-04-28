@@ -5,7 +5,8 @@ category_key: pens
 price: "¥39.00"
 image: /assets/images/catalog-pen-case.jpg
 featured: false
+featured_rank: 4
 sort_order: 4
 teaser: 柔和绿色笔袋搭配轻量收纳结构，让书写工具保持整洁。
 ---
-适合和签字笔、手账本组成套装内容，后续可以在 Pages CMS 中继续补充颜色、库存描述和活动说明。
+柔和奶油绿色搭配轻量结构，适合与签字笔、手账本一起组成礼盒，也适合每天通勤时把常用文具收得整整齐齐。

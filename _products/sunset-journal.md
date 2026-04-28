@@ -5,7 +5,8 @@ category_key: journals
 price: "¥88.00"
 image: /assets/images/story-journal.jpg
 featured: true
+featured_rank: 1
 sort_order: 1
 teaser: 轻盈封面、温润纸感和适合日常节奏的版式，适合记录灵感与生活片段。
 ---
-温暖的浅米封面配合细腻压纹，适合把待办、灵感和旅行记录放在同一本手账里。页面结构已经适配 GitHub Pages，可直接由 Pages CMS 继续维护文案与图片。
+温暖的浅米封面配合细腻压纹，适合把待办、灵感和旅行记录都放在同一本手账里，翻开时会有一种安静又踏实的陪伴感。

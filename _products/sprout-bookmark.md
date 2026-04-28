@@ -5,7 +5,8 @@ category_key: storage
 price: "¥22.00"
 image: /assets/images/catalog-bookmark.jpg
 featured: false
+featured_rank: 8
 sort_order: 8
 teaser: 细长金属线条和轻巧造型，适合礼物和阅读场景。
 ---
-它既可以作为桌面配件，也可以和手账本或笔类产品做搭配推荐。
+细长的黄铜线条让它在翻页时很安静，也很适合和手账本、礼盒包装一起搭配，做成有阅读气质的小套组。

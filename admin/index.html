@@ -68,10 +68,14 @@ layout: null
           return isRepoSlug(fallbackRepo) ? fallbackRepo : "";
         }
         var repo = detectRepo();
-        document.getElementById("repoName").textContent = repo || "首次登录后在 Pages CMS 中手动选择当前仓库";
-        document.getElementById("openCms").href = repo
+        var cmsUrl = repo
           ? "https://app.pagescms.org/?repo=" + encodeURIComponent(repo)
           : "https://app.pagescms.org/";
+        document.getElementById("repoName").textContent = repo || "首次登录后在 Pages CMS 中手动选择当前仓库";
+        document.getElementById("openCms").href = cmsUrl;
+        window.setTimeout(function () {
+          window.location.href = cmsUrl;
+        }, 1200);
       })();
     </script>
   </body>

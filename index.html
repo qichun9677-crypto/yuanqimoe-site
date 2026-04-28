@@ -3,7 +3,8 @@ layout: default
 title: 首页
 permalink: /
 ---
-{% assign featured_products = site.products | where: "featured", true | sort: "sort_order" %}
+{% assign featured_products = site.products | where: "featured", true | sort: "featured_rank" %}
+{% assign categories = site.data.home.categories | sort: "sort_order" %}
 <section class="shell hero">
   <div class="card hero-copy">
     <span class="eyebrow">{{ site.data.home.hero.eyebrow }}</span>
@@ -28,13 +29,13 @@ permalink: /
 <section class="shell section">
   <div class="section-header">
     <div>
-      <div class="meta-kicker">Explore</div>
-      <h2 class="section-title">探索萌动世界</h2>
+      <div class="meta-kicker">{{ site.data.home.explore.eyebrow }}</div>
+      <h2 class="section-title">{{ site.data.home.explore.title }}</h2>
     </div>
-    <p class="section-copy">首页分类卡、产品页分组和 Pages CMS 内容模型保持同一套结构。</p>
+    <p class="section-copy">{{ site.data.home.explore.summary }}</p>
   </div>
   <div class="feature-grid">
-    {% for item in site.data.home.categories %}
+    {% for item in categories %}
     <article class="feature-card" data-tone="{{ item.tone }}">
       <div class="meta-kicker">{{ item.kicker }}</div>
       <h3>{{ item.name }}</h3>
@@ -69,8 +70,9 @@ permalink: /
     <div>
       <div class="meta-kicker">Featured</div>
       <h2 class="section-title">{{ site.data.home.featured.title }}</h2>
+      <p class="section-copy">{{ site.data.home.featured.summary }}</p>
     </div>
-    <a class="button button-secondary" href="{{ '/products/' | relative_url }}">查看全部产品</a>
+    <a class="button button-secondary" href="{{ site.data.home.featured.button_link | relative_url }}">{{ site.data.home.featured.button_label }}</a>
   </div>
   <div class="product-grid">
     {% for product in featured_products limit: 4 %}
@@ -84,29 +86,5 @@ permalink: /
       <p class="product-meta">{{ product.teaser }}</p>
     </article>
     {% endfor %}
-  </div>
-</section>
-
-<section class="shell section admin-preview">
-  <div class="section-header">
-    <div>
-      <div class="meta-kicker">Admin Entry</div>
-      <h2 class="section-title">Pages CMS 后台入口</h2>
-    </div>
-    <p class="section-copy">`/admin/` 会作为 GitHub Pages 部署后的后台入口页，负责识别仓库并跳转到官方 Pages CMS 编辑器。</p>
-  </div>
-  <div class="admin-grid">
-    <article class="admin-card">
-      <h3>内容模型</h3>
-      <p class="admin-copy">首页数据、关于页数据和产品集合都已拆成独立内容源。</p>
-    </article>
-    <article class="admin-card" data-tone="warning">
-      <h3>媒体路径</h3>
-      <p class="admin-copy">上传资源统一写入 <code>{{ site.data.site.media_path }}</code>。</p>
-    </article>
-    <article class="admin-card" data-tone="accent">
-      <h3>可视化编辑</h3>
-      <p class="admin-copy">通过 Pages CMS 的可视化表单与富文本能力继续维护品牌内容。</p>
-    </article>
   </div>
 </section>

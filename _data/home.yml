@@ -1,51 +1,61 @@
 hero:
-  eyebrow: New Collection 2026
-  title: 记录生活的每一个小确幸
-  summary: 这套 GitHub Pages 版本延续了原型中的暖色纸感和编辑型布局，并把内容拆成可由 Pages CMS 持续维护的数据文件与产品集合。
+  eyebrow: Warm Daily Stationery
+  title: 让书写、整理与送礼都变得轻盈一点
+  summary: 元气萌动把纸张、笔触、贴纸和小收纳做成日常里最温柔的陪伴，让每一次记录都有松弛而明亮的仪式感。
   primary_label: 浏览产品系列
   primary_link: /products/
   secondary_label: 品牌故事
   secondary_link: /about/
   image: /assets/images/hero-stationery.jpg
-  chip_title: GitHub Pages Ready
-  chip_text: 已包含 Pages CMS 配置、媒体目录与 admin 入口
+  chip_title: 四个日常系列
+  chip_text: 手账、书写、贴纸与收纳都能在后台持续维护
+explore:
+  eyebrow: Explore
+  title: 按照你的日常节奏挑选喜欢的系列
+  summary: 分类卡片的顺序、标题、图片跳转和说明都可以在后台调整，前台会按你设置的顺序自动更新。
 categories:
   - key: journals
     name: 手账本
     kicker: Journals
-    description: 轻盈封面、细腻纸感，适合记录灵感和日常节奏。
+    description: 轻盈封面、细腻纸感与柔和留白，适合记录灵感和日常节奏。
     link: /products/#journals
     tone: blush
+    sort_order: 1
   - key: pens
     name: 书写笔
     kicker: Pens
-    description: 从柔和渐变到细节配件，围绕舒适书写体验展开。
+    description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
     link: /products/#pens
     tone: gold
+    sort_order: 2
   - key: stickers
     name: 贴纸胶带
     kicker: Stickers
-    description: 用图案和色块给计划页、包装和桌面笔记留下小情绪。
+    description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
     link: /products/#stickers
     tone: mint
+    sort_order: 3
   - key: storage
     name: 桌面收纳
     kicker: Storage
     description: 让书签、笔套和透明小包都有自己的秩序感。
     link: /products/#storage
     tone: default
+    sort_order: 4
 story:
   eyebrow: Our Story
-  title: 文具不仅是工具，更是情感的容器。
-  summary: 你设计好的静态原型在这个版本里已经变成内容驱动结构。品牌文案、首页区块和产品卡片都可以直接在 Pages CMS 中继续维护，而不需要改模板代码。
+  title: 文具不只是工具，也是安放心绪的小角落。
+  summary: 我们希望把温柔的纸感、顺手的书写触感和有秩序的小收纳，重新带回每一天的学习、工作与生活片刻。
   image: /assets/images/story-journal.jpg
 stats:
-  - value: 100%
-    label: 页面结构已内容化
   - value: 8+
-    label: 产品样例已建模
-  - value: /admin
-    label: 已生成后台入口
+    label: 已上架系列样品
+  - value: 4
+    label: 当前主打分类
+  - value: 24h
+    label: 记录灵感不停歇
 featured:
   title: 元气新品上架
-  summary: 首页精选自动读取标记为 featured 的产品文件。
+  summary: 首页精选区会读取已勾选“首页推荐”的产品，并按你设置的精选排序号展示。
+  button_label: 查看全部产品
+  button_link: /products/

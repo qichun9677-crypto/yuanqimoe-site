@@ -3,23 +3,24 @@ layout: default
 title: 产品系列
 permalink: /products/
 ---
+{% assign categories = site.data.home.categories | sort: "sort_order" %}
 <section class="shell">
   <div class="page-hero card">
-    <div class="meta-kicker">Product Series</div>
-    <h1>产品系列</h1>
-    <p class="page-intro">按照静态原型中的分类方式，把集合内容映射成 GitHub Pages 可直接渲染的产品页面。</p>
+    <div class="meta-kicker">{{ site.data.products_page.hero.eyebrow }}</div>
+    <h1>{{ site.data.products_page.hero.title }}</h1>
+    <p class="page-intro">{{ site.data.products_page.hero.summary }}</p>
   </div>
 </section>
 
 <section class="shell section">
   <ul class="filter-list">
-    {% for item in site.data.home.categories %}
+    {% for item in categories %}
     <li><a href="#{{ item.key }}">{{ item.name }}</a></li>
     {% endfor %}
   </ul>
 </section>
 
-{% for item in site.data.home.categories %}
+{% for item in categories %}
 {% assign products = site.products | where: "category_key", item.key | sort: "sort_order" %}
 <section class="shell section" id="{{ item.key }}">
   <div class="section-header">
