@@ -14,37 +14,29 @@ explore:
   title: 按照你的日常节奏挑选喜欢的系列
   summary: 从灵感记录、顺手书写，到贴纸装饰和桌面收纳，慢慢挑一组最适合你的日常节奏。
 categories:
-  - name: 手账本
-    kicker: 手账系列
-    description: 轻盈封面、细腻纸感与柔和留白，适合记录灵感和日常节奏。
-    button_label: 浏览系列
-    button_link: /products/#journals
-  - name: 书写笔
-    kicker: 书写系列
-    description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
-    button_label: 浏览系列
-    button_link: /products/#pens
-  - name: 贴纸胶带
-    kicker: 贴纸系列
-    description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
-    button_label: 浏览系列
-    button_link: /products/#stickers
   - name: 桌面收纳
     kicker: 收纳系列
     description: 让书签、笔套和透明小包都有自己的秩序感。
-    button_label: 浏览系列
-    button_link: /products/#storage
+  - name: 美工刀
+    kicker: 手账系列
+    description: 轻盈封面、细腻纸感与柔和留白，适合记录灵感和日常节奏。
+  - name: 书写笔
+    kicker: 书写系列
+    description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
+  - name: 贴纸胶带
+    kicker: 贴纸系列
+    description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
 story:
   eyebrow: 品牌故事
   title: 文具不只是工具，也是安放心绪的小角落。
   summary: 我们希望把温柔的纸感、顺手的书写触感和有秩序的小收纳，重新带回每一天的学习、工作与生活片刻。
   image: /assets/images/story-journal.jpg
 stats:
-  - value: "8+"
+  - value: 8+
     label: 已上架系列样品
-  - value: 4类
+  - value: 8类
     label: 当前主打分类
-  - value: "24h"
+  - value: 24h
     label: 记录灵感不停歇
 featured:
   title: 元气精选推荐
