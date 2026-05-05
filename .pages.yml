@@ -93,18 +93,18 @@ content:
           - name: categories
             label: 首页分类卡片
             type: object
-            description: 拖动卡片即可调整前台顺序，不需要填写代码。
+            description: 这里只控制首页展示卡片，修改或删除这里的卡片不会影响商品分类。
             list:
-              min: 4
-              max: 4
+              min: 1
               collapsible:
                 collapsed: true
                 summary: "{name}"
             fields:
-              - { name: key, label: false, type: string, hidden: true }
               - { name: name, label: 分类名称, type: string }
-              - { name: kicker, label: 英文小标题, type: string }
+              - { name: kicker, label: 卡片小标题, type: string }
               - { name: description, label: 分类说明, type: text }
+              - { name: button_label, label: 按钮文字, type: string }
+              - { name: button_link, label: 按钮链接, type: string, description: "例如：/products/ 或 /about/" }
           - name: story
             label: 品牌故事区块
             type: object
@@ -116,7 +116,7 @@ content:
           - name: stats
             label: 首页数据卡片
             type: object
-            description: 拖动即可调整前台显示顺序。
+            description: 这里完全是人工填写，不会自动关联首页分类数量。
             list:
               min: 1
               max: 6
@@ -200,8 +200,47 @@ content:
     label: 商品管理
     type: group
     items:
+      - name: product_categories
+        label: 分类归类与排序
+        type: file
+        path: _data/product_categories.yml
+        format: yaml
+        operations:
+          delete: false
+        fields:
+          - name: product_categories
+            label: 商品分类
+            type: object
+            description: 这里专门用来调整产品页分类顺序，并把商品放到对应分类里。普通维护只需要在这里拖动排序，不需要改代码。
+            list:
+              min: 4
+              max: 4
+              collapsible:
+                collapsed: true
+                summary: "{name}"
+            fields:
+              - { name: name, label: 分类名称, type: string }
+              - { name: slug, label: false, type: string, hidden: true }
+              - { name: eyebrow, label: 小标题, type: string }
+              - { name: description, label: 分类说明, type: text }
+              - name: products
+                label: 当前分类下的商品
+                type: object
+                description: 点击“添加条目”即可把商品放进当前分类；拖动条目可调整这个分类下的商品展示顺序。
+                list:
+                  collapsible:
+                    collapsed: true
+                    summary: "{product}"
+                fields:
+                  - name: product
+                    label: 选择商品
+                    type: reference
+                    options:
+                      collection: products
+                      value: "{slug}"
+                      label: "{title}"
       - name: products
-        label: 商品列表
+        label: 商品资料库
         type: collection
         path: _products
         filename:
@@ -214,37 +253,24 @@ content:
           primary: title
           sort: sort_order
           order: asc
-          fields: [category_key, price, featured]
+          fields: [price, featured_rank]
         fields:
           - { name: title, label: 商品名称, type: string, required: true }
-          - name: category_key
-            label: 所属分类
-            type: select
-            required: true
-            options:
-              values:
-                - { name: journals, label: 手账本 }
-                - { name: pens, label: 书写笔 }
-                - { name: stickers, label: 贴纸胶带 }
-                - { name: storage, label: 桌面收纳 }
+          - { name: category, label: false, type: string, hidden: true }
           - { name: price, label: 显示价格, type: string, required: true, description: "例如：¥88.00" }
           - { name: image, label: 商品主图, type: image, required: true }
           - { name: teaser, label: 卡片摘要, type: text, description: "显示在首页和产品页卡片上的简短介绍。" }
-          - name: featured
-            label: 首页精选
-            type: boolean
-            description: 打开后，这个商品会出现在首页精选区域。
           - name: featured_rank
-            label: 首页精选排序
+            label: 首页精选顺序
             type: number
-            description: 只在勾选“首页精选”后生效。数字越小越靠前。
+            description: 填 0 代表不显示在首页精选；填 1、2、3… 会按顺序显示，并支持左右滑动查看更多。
             options:
-              min: 1
+              min: 0
               step: 1
           - name: sort_order
-            label: 分类页排序
+            label: false
             type: number
-            description: 同一分类里，数字越小越靠前。
+            hidden: true
             options:
               min: 1
               step: 1

@@ -1,0 +1,10 @@
+{% assign display_category = include.fallback | default: '' %}
+{% for category_group in site.data.product_categories.product_categories %}
+  {% if category_group.products %}
+    {% assign matched_product = category_group.products | where: "product", include.slug | first %}
+    {% if matched_product %}
+      {% assign display_category = category_group.name %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{{ display_category }}

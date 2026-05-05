@@ -4,7 +4,7 @@ title: 关于我们
 permalink: /about/
 ---
 {% assign about_values = site.data.about.values %}
-<section class="shell detail-layout">
+<section class="shell detail-layout page-hero-layout about-hero-layout">
   <div class="detail-media">
     <img src="{{ site.data.about.image | relative_url }}" alt="{{ site.data.about.title }}">
   </div>
@@ -26,9 +26,9 @@ permalink: /about/
 </section>
 
 <section class="shell section value-grid">
-  {% for item in about_values %}
+{% for item in about_values %}
   <article class="value-card">
-    <div class="meta-kicker">About</div>
+    <div class="meta-kicker">品牌亮点</div>
     <h3>{{ item.title }}</h3>
     <p class="meta-copy">{{ item.text }}</p>
   </article>

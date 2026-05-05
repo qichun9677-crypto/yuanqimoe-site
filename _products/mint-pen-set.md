@@ -1,10 +1,8 @@
 ---
 title: 奶油薄荷 渐变签字笔
 category: 书写笔
-category_key: pens
 price: "¥45.00"
 image: /assets/images/product-pens.jpg
-featured: true
 featured_rank: 2
 sort_order: 3
 teaser: 轻盈配色和顺滑书写触感，适合学生、办公和礼物场景。

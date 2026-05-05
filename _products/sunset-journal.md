@@ -1,10 +1,8 @@
 ---
 title: 夕阳漫步 手账本
 category: 手账本
-category_key: journals
 price: "¥88.00"
 image: /assets/images/story-journal.jpg
-featured: true
 featured_rank: 1
 sort_order: 1
 teaser: 轻盈封面、温润纸感和适合日常节奏的版式，适合记录灵感与生活片段。

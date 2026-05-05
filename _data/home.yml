@@ -1,5 +1,5 @@
 hero:
-  eyebrow: Warm Daily Stationery
+  eyebrow: 温柔日常文具
   title: 让书写、整理与送礼都变得轻盈一点
   summary: 元气萌动把纸张、笔触、贴纸和小收纳做成日常里最温柔的陪伴，让每一次记录都有松弛而明亮的仪式感。
   primary_label: 浏览产品系列
@@ -8,54 +8,46 @@ hero:
   secondary_link: /about/
   image: /assets/images/hero-stationery.jpg
   chip_title: 四个日常系列
-  chip_text: 手账、书写、贴纸与收纳都能在后台持续维护
+  chip_text: 手账、书写、贴纸与收纳，陪你记录、整理与送礼。
 explore:
-  eyebrow: Explore
+  eyebrow: 分类导览
   title: 按照你的日常节奏挑选喜欢的系列
-  summary: 分类卡片的顺序、标题、图片跳转和说明都可以在后台调整，前台会按你设置的顺序自动更新。
+  summary: 从灵感记录、顺手书写，到贴纸装饰和桌面收纳，慢慢挑一组最适合你的日常节奏。
 categories:
-  - key: journals
-    name: 手账本
-    kicker: Journals
+  - name: 手账本
+    kicker: 手账系列
     description: 轻盈封面、细腻纸感与柔和留白，适合记录灵感和日常节奏。
-    link: /products/#journals
-    tone: blush
-    sort_order: 1
-  - key: pens
-    name: 书写笔
-    kicker: Pens
+    button_label: 浏览系列
+    button_link: /products/#journals
+  - name: 书写笔
+    kicker: 书写系列
     description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
-    link: /products/#pens
-    tone: gold
-    sort_order: 2
-  - key: stickers
-    name: 贴纸胶带
-    kicker: Stickers
+    button_label: 浏览系列
+    button_link: /products/#pens
+  - name: 贴纸胶带
+    kicker: 贴纸系列
     description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
-    link: /products/#stickers
-    tone: mint
-    sort_order: 3
-  - key: storage
-    name: 桌面收纳
-    kicker: Storage
+    button_label: 浏览系列
+    button_link: /products/#stickers
+  - name: 桌面收纳
+    kicker: 收纳系列
     description: 让书签、笔套和透明小包都有自己的秩序感。
-    link: /products/#storage
-    tone: default
-    sort_order: 4
+    button_label: 浏览系列
+    button_link: /products/#storage
 story:
-  eyebrow: Our Story
+  eyebrow: 品牌故事
   title: 文具不只是工具，也是安放心绪的小角落。
   summary: 我们希望把温柔的纸感、顺手的书写触感和有秩序的小收纳，重新带回每一天的学习、工作与生活片刻。
   image: /assets/images/story-journal.jpg
 stats:
-  - value: 8+
+  - value: "8+"
     label: 已上架系列样品
-  - value: 4
+  - value: 4类
     label: 当前主打分类
-  - value: 24h
+  - value: "24h"
     label: 记录灵感不停歇
 featured:
-  title: 元气新品上架
-  summary: 首页精选区会读取已勾选“首页推荐”的产品，并按你设置的精选排序号展示。
+  title: 元气精选推荐
+  summary: 精选几款人气单品，左右滑动继续看看更多温柔日常好物。
   button_label: 查看全部产品
   button_link: /products/

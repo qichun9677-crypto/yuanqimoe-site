@@ -29,4 +29,25 @@
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
+
+  function scrollCarousel(id, direction) {
+    var target = document.getElementById(id);
+    if (!target) {
+      return;
+    }
+    var distance = Math.max(target.clientWidth * 0.82, 280);
+    target.scrollBy({ left: distance * direction, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-carousel-prev]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      scrollCarousel(button.getAttribute("data-carousel-prev"), -1);
+    });
+  });
+
+  document.querySelectorAll("[data-carousel-next]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      scrollCarousel(button.getAttribute("data-carousel-next"), 1);
+    });
+  });
 })();

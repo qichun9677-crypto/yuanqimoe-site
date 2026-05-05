@@ -1,11 +1,9 @@
 ---
 title: 晨雾格纹 计划手帐
 category: 手账本
-category_key: journals
 price: "¥72.00"
 image: /assets/images/hero-stationery.jpg
-featured: false
-featured_rank: 3
+featured_rank: 0
 sort_order: 2
 teaser: 带有柔和留白和轻计划版式，适合日常记录与周计划整理。
 ---

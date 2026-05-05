@@ -216,6 +216,13 @@ button {
   margin-top: 26px;
 }
 
+.carousel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -387,7 +394,7 @@ button {
 .catalog-layout {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  gap: 24px;
+  gap: 32px;
   align-items: stretch;
 }
 
@@ -410,7 +417,12 @@ button {
 .detail-copy {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 42px 46px;
+}
+
+.page-hero-layout .detail-copy {
+  padding: 50px 54px;
 }
 
 .metric-grid,
@@ -434,6 +446,28 @@ button {
 
 .product-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.featured-carousel {
+  overflow-x: auto;
+  padding: 6px 4px 16px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.featured-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 320px);
+  gap: 18px;
+}
+
+.featured-card {
+  scroll-snap-align: start;
+}
+
+.carousel-button {
+  min-width: 108px;
 }
 
 .product-card {
@@ -586,23 +620,44 @@ button {
 }
 
 .detail-copy h1 {
-  margin-top: 14px;
-  margin-bottom: 12px;
-  font-size: clamp(2rem, 2.8vw, 3rem);
+  margin-top: 16px;
+  margin-bottom: 18px;
+  font-size: clamp(1.9rem, 2.5vw, 3.05rem);
+  line-height: 1.18;
+  max-width: 13ch;
+  text-wrap: balance;
 }
 
 .detail-copy .lede {
-  max-width: none;
+  max-width: 34ch;
+  margin-bottom: 0;
+}
+
+.about-hero-layout .detail-copy h1 {
+  max-width: 15ch;
+}
+
+.product-hero-layout .detail-copy h1 {
+  max-width: 12ch;
+}
+
+.detail-copy .meta-kicker {
+  margin-bottom: 8px;
 }
 
 .detail-panels {
   display: grid;
   gap: 18px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .detail-content {
   margin-top: 26px;
+}
+
+.detail-content .page-card,
+.rich-text.page-card {
+  padding: 34px 38px;
 }
 
 .footer-grid {
@@ -711,6 +766,10 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .featured-track {
+    grid-auto-columns: minmax(240px, 300px);
+  }
+
   .hero-visual img,
   .story-visual img,
   .detail-media img {
@@ -765,6 +824,10 @@ button {
   .detail-copy {
     padding: 28px;
   }
+
+  .detail-copy h1 {
+    max-width: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -791,6 +854,11 @@ button {
   .hero-visual,
   .site-footer .card {
     padding: 20px;
+  }
+
+  .detail-content .page-card,
+  .rich-text.page-card {
+    padding: 24px;
   }
 
   .site-main {

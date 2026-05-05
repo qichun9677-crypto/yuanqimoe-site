@@ -1,4 +1,4 @@
-eyebrow: About Genki Bloom
+eyebrow: 关于元气萌动
 title: 用纸笔的温润，治愈日常的匆忙
 summary: 元气萌动并不只是一个文具品牌，而是一种让记录、收纳与生活习惯重新变得有仪式感的方式。
 image: /assets/images/about-hero.jpg
@@ -9,20 +9,17 @@ story_html: |
 values:
   - title: 品牌故事
     text: 用生活方式品牌的语气讲述纸笔、收纳和灵感之间的关系。
-    sort_order: 1
   - title: 线下门店
     text: 预留给门店信息、快闪活动与城市合作空间的展示入口。
-    sort_order: 2
   - title: 合作灵感
     text: 适合延展节日礼盒、品牌联名和内容共创的轻量场景。
-    sort_order: 3
 actions:
   primary_label: 浏览产品系列
   primary_link: /products/
   secondary_label: 返回首页
   secondary_link: /
 cta:
-  eyebrow: Explore More
+  eyebrow: 继续浏览
   title: 把喜欢的系列慢慢收进你的日常
   text: 继续浏览手账、书写、贴纸和收纳系列，挑选更适合你的搭配方式。
   link: /products/

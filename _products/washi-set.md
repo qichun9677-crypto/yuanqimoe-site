@@ -1,10 +1,8 @@
 ---
 title: 治愈系 和纸胶带套装
 category: 贴纸胶带
-category_key: stickers
 price: "¥29.00"
 image: /assets/images/product-washi.jpg
-featured: true
 featured_rank: 3
 sort_order: 5
 teaser: 把手帐、包装和卡片装饰成更柔软的日常片段。

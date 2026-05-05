@@ -3,7 +3,7 @@ layout: default
 title: 首页
 permalink: /
 ---
-{% assign featured_products = site.products | where: "featured", true | sort: "featured_rank" %}
+{% assign featured_products = site.products | where_exp: "product", "product.featured_rank and product.featured_rank > 0" | sort: "featured_rank" %}
 {% assign categories = site.data.home.categories %}
 <section class="shell hero">
   <div class="card hero-copy">
@@ -36,18 +36,16 @@ permalink: /
   </div>
   <div class="feature-grid">
     {% for item in categories %}
+    {% assign tone_index = forloop.index0 | modulo: 4 %}
     {% assign card_tone = 'default' %}
-    {% case item.key %}
-      {% when 'journals' %}{% assign card_tone = 'blush' %}
-      {% when 'pens' %}{% assign card_tone = 'gold' %}
-      {% when 'stickers' %}{% assign card_tone = 'mint' %}
-      {% when 'storage' %}{% assign card_tone = 'default' %}
-    {% endcase %}
+    {% if tone_index == 0 %}{% assign card_tone = 'blush' %}{% endif %}
+    {% if tone_index == 1 %}{% assign card_tone = 'gold' %}{% endif %}
+    {% if tone_index == 2 %}{% assign card_tone = 'mint' %}{% endif %}
     <article class="feature-card" data-tone="{{ card_tone }}">
       <div class="meta-kicker">{{ item.kicker }}</div>
       <h3>{{ item.name }}</h3>
       <p class="meta-copy">{{ item.description }}</p>
-      <a class="button button-secondary" href="{{ '/products/#' | append: item.key | relative_url }}">{{ item.name }}</a>
+      <a class="button button-secondary" href="{{ item.button_link | relative_url }}">{{ item.button_label }}</a>
     </article>
     {% endfor %}
   </div>
@@ -75,24 +73,30 @@ permalink: /
 <section class="shell section">
   <div class="section-header">
     <div>
-      <div class="meta-kicker">Featured</div>
+      <div class="meta-kicker">精选推荐</div>
       <h2 class="section-title">{{ site.data.home.featured.title }}</h2>
       <p class="section-copy">{{ site.data.home.featured.summary }}</p>
     </div>
-    <a class="button button-secondary" href="{{ site.data.home.featured.button_link | relative_url }}">{{ site.data.home.featured.button_label }}</a>
+    <div class="carousel-actions">
+      <button class="button button-secondary carousel-button" type="button" data-carousel-prev="featuredProducts">上一组</button>
+      <button class="button button-secondary carousel-button" type="button" data-carousel-next="featuredProducts">下一组</button>
+      <a class="button button-secondary" href="{{ site.data.home.featured.button_link | relative_url }}">{{ site.data.home.featured.button_label }}</a>
+    </div>
   </div>
-  <div class="product-grid">
-    {% for product in featured_products limit: 4 %}
-    {% assign category_info = site.data.home.categories | where: "key", product.category_key | first %}
-    <article class="product-card">
-      <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
-      <div class="product-topline">
-        <div class="meta-kicker">{{ category_info.name }}</div>
-        <div class="price-badge">{{ product.price }}</div>
-      </div>
-      <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
-      <p class="product-meta">{{ product.teaser }}</p>
-    </article>
-    {% endfor %}
+  <div class="featured-carousel" id="featuredProducts" data-carousel>
+    <div class="featured-track">
+      {% for product in featured_products %}
+      {% capture display_category %}{% include product-category-name.html slug=product.slug fallback=product.category %}{% endcapture %}
+      <article class="product-card featured-card">
+        <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
+        <div class="product-topline">
+          <div class="meta-kicker">{{ display_category | strip }}</div>
+          <div class="price-badge">{{ product.price }}</div>
+        </div>
+        <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
+        <p class="product-meta">{{ product.teaser }}</p>
+      </article>
+      {% endfor %}
+    </div>
   </div>
 </section>
