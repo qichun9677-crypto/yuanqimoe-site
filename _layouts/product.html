@@ -1,12 +1,13 @@
 ---
 layout: default
 ---
+{% assign category_info = site.data.home.categories | where: "key", page.category_key | first %}
 <section class="shell detail-layout">
   <div class="detail-media">
     <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
   </div>
   <div class="detail-copy card">
-    <div class="meta-kicker">{{ page.category }}</div>
+    <div class="meta-kicker">{{ category_info.name }}</div>
     <h1>{{ page.title }}</h1>
     <p class="lede">{{ page.teaser }}</p>
     <div class="detail-panels">

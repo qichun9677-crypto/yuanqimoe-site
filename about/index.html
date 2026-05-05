@@ -3,7 +3,7 @@ layout: default
 title: 关于我们
 permalink: /about/
 ---
-{% assign about_values = site.data.about.values | sort: "sort_order" %}
+{% assign about_values = site.data.about.values %}
 <section class="shell detail-layout">
   <div class="detail-media">
     <img src="{{ site.data.about.image | relative_url }}" alt="{{ site.data.about.title }}">

@@ -19,11 +19,15 @@
         </button>
         <nav class="site-nav" id="siteNav" aria-label="站点导航">
           <ul class="nav-list">
-            {% for item in site.data.navigation.header %}
-            <li class="{% if page.url == item.url %}is-current{% endif %}">
-              <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+            <li class="{% if page.url == '/' %}is-current{% endif %}">
+              <a href="{{ '/' | relative_url }}">首页</a>
             </li>
-            {% endfor %}
+            <li class="{% if page.url == '/products/' %}is-current{% endif %}">
+              <a href="{{ '/products/' | relative_url }}">产品系列</a>
+            </li>
+            <li class="{% if page.url == '/about/' %}is-current{% endif %}">
+              <a href="{{ '/about/' | relative_url }}">关于我们</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -40,9 +44,9 @@
             <div class="brand-mark">{{ site.data.site.title }}</div>
             <p class="footer-meta">{{ site.data.site.description }}</p>
             <div class="footer-links">
-              {% for item in site.data.navigation.footer %}
-              <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
-              {% endfor %}
+              <a href="{{ '/' | relative_url }}">首页</a>
+              <a href="{{ '/about/' | relative_url }}">品牌故事</a>
+              <a href="{{ '/products/' | relative_url }}">产品系列</a>
             </div>
           </div>
           <div>

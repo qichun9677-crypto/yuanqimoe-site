@@ -4,7 +4,7 @@ title: 首页
 permalink: /
 ---
 {% assign featured_products = site.products | where: "featured", true | sort: "featured_rank" %}
-{% assign categories = site.data.home.categories | sort: "sort_order" %}
+{% assign categories = site.data.home.categories %}
 <section class="shell hero">
   <div class="card hero-copy">
     <span class="eyebrow">{{ site.data.home.hero.eyebrow }}</span>
@@ -36,11 +36,18 @@ permalink: /
   </div>
   <div class="feature-grid">
     {% for item in categories %}
-    <article class="feature-card" data-tone="{{ item.tone }}">
+    {% assign card_tone = 'default' %}
+    {% case item.key %}
+      {% when 'journals' %}{% assign card_tone = 'blush' %}
+      {% when 'pens' %}{% assign card_tone = 'gold' %}
+      {% when 'stickers' %}{% assign card_tone = 'mint' %}
+      {% when 'storage' %}{% assign card_tone = 'default' %}
+    {% endcase %}
+    <article class="feature-card" data-tone="{{ card_tone }}">
       <div class="meta-kicker">{{ item.kicker }}</div>
       <h3>{{ item.name }}</h3>
       <p class="meta-copy">{{ item.description }}</p>
-      <a class="button button-secondary" href="{{ item.link | relative_url }}">{{ item.name }}</a>
+      <a class="button button-secondary" href="{{ '/products/#' | append: item.key | relative_url }}">{{ item.name }}</a>
     </article>
     {% endfor %}
   </div>
@@ -76,10 +83,11 @@ permalink: /
   </div>
   <div class="product-grid">
     {% for product in featured_products limit: 4 %}
+    {% assign category_info = site.data.home.categories | where: "key", product.category_key | first %}
     <article class="product-card">
       <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
       <div class="product-topline">
-        <div class="meta-kicker">{{ product.category }}</div>
+        <div class="meta-kicker">{{ category_info.name }}</div>
         <div class="price-badge">{{ product.price }}</div>
       </div>
       <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>

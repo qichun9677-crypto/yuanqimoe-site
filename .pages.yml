@@ -1,176 +1,251 @@
+settings:
+  hide: true
+  content:
+    merge: true
+
 media:
   input: assets/images/uploads
   output: /assets/images/uploads
 
 content:
-  - name: site
-    label: 站点设置
-    type: file
-    path: _data/site.yml
-    format: yaml
-    fields:
-      - { name: title, label: 品牌名称, type: string, required: true }
-      - { name: tagline, label: 品牌副标题, type: string }
-      - { name: description, label: 站点描述, type: text }
-      - { name: email, label: 邮箱, type: string }
-      - { name: phone, label: 电话, type: string }
-      - { name: address, label: 地址, type: text }
-      - { name: copyright, label: 版权文案, type: string }
-      - { name: repo_hint, label: 仓库占位, type: string }
-      - { name: media_path, label: 媒体目录, type: string }
-      - { name: admin_note, label: 管理提示, type: text }
-  - name: navigation
-    label: 导航配置
-    type: file
-    path: _data/navigation.yml
-    format: yaml
-    fields:
-      - name: header
-        label: 顶部导航
-        type: list
-        item:
-          type: object
-          fields:
-            - { name: title, label: 标题, type: string }
-            - { name: url, label: 链接, type: string }
-      - name: footer
-        label: 页脚导航
-        type: list
-        item:
-          type: object
-          fields:
-            - { name: title, label: 标题, type: string }
-            - { name: url, label: 链接, type: string }
-  - name: homepage
-    label: 首页内容
-    type: file
-    path: _data/home.yml
-    format: yaml
-    fields:
-      - name: hero
-        label: Hero 区块
-        type: object
+  - name: basic_info
+    label: 基础信息
+    type: group
+    items:
+      - name: site
+        label: 品牌基础设置
+        type: file
+        path: _data/site.yml
+        format: yaml
+        operations:
+          delete: false
         fields:
-          - { name: eyebrow, label: 眉题, type: string }
-          - { name: title, label: 标题, type: string }
-          - { name: summary, label: 摘要, type: text }
-          - { name: primary_label, label: 主按钮文案, type: string }
-          - { name: primary_link, label: 主按钮链接, type: string }
-          - { name: secondary_label, label: 次按钮文案, type: string }
-          - { name: secondary_link, label: 次按钮链接, type: string }
-          - { name: image, label: Hero 图片, type: image }
-          - { name: chip_title, label: 浮层标题, type: string }
-          - { name: chip_text, label: 浮层说明, type: text }
-      - name: explore
-        label: 分类导览区
-        type: object
+          - name: title
+            label: 品牌名称
+            type: string
+            required: true
+            description: 前台左上角显示的主品牌名。
+          - name: tagline
+            label: 品牌副标题
+            type: string
+            description: 显示在品牌名称下方的一行短句。
+          - name: description
+            label: 品牌简介
+            type: text
+            description: 显示在页脚和站点描述中的简介文案。
+          - name: email
+            label: 联系邮箱
+            type: string
+          - name: phone
+            label: 联系电话
+            type: string
+          - name: address
+            label: 联系地址
+            type: text
+          - name: copyright
+            label: 版权文案
+            type: string
+          - name: repo_hint
+            label: false
+            type: string
+            hidden: true
+          - name: media_path
+            label: false
+            type: string
+            hidden: true
+          - name: admin_note
+            label: false
+            type: text
+            hidden: true
+  - name: page_content
+    label: 页面编辑
+    type: group
+    items:
+      - name: homepage
+        label: 首页编辑
+        type: file
+        path: _data/home.yml
+        format: yaml
+        operations:
+          delete: false
         fields:
-          - { name: eyebrow, label: 眉题, type: string }
-          - { name: title, label: 标题, type: string }
-          - { name: summary, label: 摘要, type: text }
-      - name: categories
-        label: 分类卡片
-        type: list
-        item:
-          type: object
-          fields:
-            - { name: key, label: 锚点键, type: string }
-            - { name: name, label: 分类名, type: string }
-            - { name: kicker, label: 英文眉题, type: string }
-            - { name: description, label: 描述, type: text }
-            - { name: link, label: 跳转链接, type: string }
-            - { name: tone, label: 色调, type: select, options: [blush, gold, mint, default] }
-            - { name: sort_order, label: 排序号, type: number }
-      - name: story
-        label: 品牌故事区块
-        type: object
+          - name: hero
+            label: 首页首屏
+            type: object
+            fields:
+              - { name: eyebrow, label: 小标题, type: string, description: "显示在大标题上方的小字。" }
+              - { name: title, label: 大标题, type: string }
+              - { name: summary, label: 首页简介, type: text, description: "这段话会显示在首页首屏右侧，适合写品牌第一印象。" }
+              - { name: primary_label, label: 主按钮文字, type: string }
+              - { name: primary_link, label: 主按钮链接, type: string, description: "一般保持默认即可。" }
+              - { name: secondary_label, label: 次按钮文字, type: string }
+              - { name: secondary_link, label: 次按钮链接, type: string, description: "一般保持默认即可。" }
+              - { name: image, label: 首屏主图, type: image }
+              - { name: chip_title, label: 图片浮层标题, type: string }
+              - { name: chip_text, label: 图片浮层说明, type: text }
+          - name: explore
+            label: 分类导览区
+            type: object
+            fields:
+              - { name: eyebrow, label: 小标题, type: string }
+              - { name: title, label: 标题, type: string }
+              - { name: summary, label: 摘要, type: text, description: "这里是分类卡片上方的整段说明。" }
+          - name: categories
+            label: 首页分类卡片
+            type: object
+            description: 拖动卡片即可调整前台顺序，不需要填写代码。
+            list:
+              min: 4
+              max: 4
+              collapsible:
+                collapsed: true
+                summary: "{name}"
+            fields:
+              - { name: key, label: false, type: string, hidden: true }
+              - { name: name, label: 分类名称, type: string }
+              - { name: kicker, label: 英文小标题, type: string }
+              - { name: description, label: 分类说明, type: text }
+          - name: story
+            label: 品牌故事区块
+            type: object
+            fields:
+              - { name: eyebrow, label: 小标题, type: string }
+              - { name: title, label: 标题, type: string }
+              - { name: summary, label: 摘要, type: text }
+              - { name: image, label: 故事图片, type: image }
+          - name: stats
+            label: 首页数据卡片
+            type: object
+            description: 拖动即可调整前台显示顺序。
+            list:
+              min: 1
+              max: 6
+              collapsible:
+                collapsed: true
+                summary: "{label}"
+            fields:
+              - { name: value, label: 数值, type: string }
+              - { name: label, label: 说明文字, type: string }
+          - name: featured
+            label: 首页精选区
+            type: object
+            fields:
+              - { name: title, label: 标题, type: string }
+              - { name: summary, label: 摘要, type: text }
+              - { name: button_label, label: 按钮文字, type: string }
+              - { name: button_link, label: 按钮链接, type: string, description: "一般保持默认即可。" }
+      - name: products_page
+        label: 产品页顶部文案
+        type: file
+        path: _data/products_page.yml
+        format: yaml
+        operations:
+          delete: false
         fields:
-          - { name: eyebrow, label: 眉题, type: string }
-          - { name: title, label: 标题, type: string }
-          - { name: summary, label: 摘要, type: text }
-          - { name: image, label: 故事图片, type: image }
-      - name: stats
-        label: 首页统计
-        type: list
-        item:
-          type: object
-          fields:
-            - { name: value, label: 数值, type: string }
-            - { name: label, label: 文案, type: string }
-      - name: featured
-        label: 首页精选区
-        type: object
+          - name: hero
+            label: 顶部说明
+            type: object
+            fields:
+              - { name: eyebrow, label: 小标题, type: string }
+              - { name: title, label: 主标题, type: string }
+              - { name: summary, label: 摘要, type: text }
+      - name: about
+        label: 关于页编辑
+        type: file
+        path: _data/about.yml
+        format: yaml
+        operations:
+          delete: false
         fields:
-          - { name: title, label: 标题, type: string }
-          - { name: summary, label: 摘要, type: text }
-          - { name: button_label, label: 按钮文案, type: string }
-          - { name: button_link, label: 按钮链接, type: string }
-  - name: products_page
-    label: 产品页设置
-    type: file
-    path: _data/products_page.yml
-    format: yaml
-    fields:
-      - name: hero
-        label: 顶部说明
-        type: object
+          - { name: eyebrow, label: 小标题, type: string }
+          - { name: title, label: 主标题, type: string }
+          - { name: summary, label: 顶部摘要, type: text }
+          - { name: image, label: 顶部主图, type: image }
+          - name: story_html
+            label: 品牌故事正文
+            type: rich-text
+            options:
+              format: html
+          - name: values
+            label: 下方卡片区
+            type: object
+            description: 拖动即可调整前台顺序。
+            list:
+              min: 1
+              max: 6
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - { name: title, label: 卡片标题, type: string }
+              - { name: text, label: 卡片说明, type: text }
+          - name: actions
+            label: 顶部按钮
+            type: object
+            fields:
+              - { name: primary_label, label: 主按钮文字, type: string }
+              - { name: primary_link, label: 主按钮链接, type: string }
+              - { name: secondary_label, label: 次按钮文字, type: string }
+              - { name: secondary_link, label: 次按钮链接, type: string }
+          - name: cta
+            label: 页面底部引导区
+            type: object
+            fields:
+              - { name: eyebrow, label: 小标题, type: string }
+              - { name: title, label: 标题, type: string }
+              - { name: text, label: 摘要, type: text }
+              - { name: link, label: 按钮链接, type: string }
+              - { name: label, label: 按钮文字, type: string }
+  - name: product_admin
+    label: 商品管理
+    type: group
+    items:
+      - name: products
+        label: 商品列表
+        type: collection
+        path: _products
+        filename:
+          template: "{primary}.md"
+          field: false
+        format: yaml-frontmatter
+        operations:
+          rename: false
+        view:
+          primary: title
+          sort: sort_order
+          order: asc
+          fields: [category_key, price, featured]
         fields:
-          - { name: eyebrow, label: 眉题, type: string }
-          - { name: title, label: 标题, type: string }
-          - { name: summary, label: 摘要, type: text }
-  - name: about
-    label: 关于页
-    type: file
-    path: _data/about.yml
-    format: yaml
-    fields:
-      - { name: eyebrow, label: 眉题, type: string }
-      - { name: title, label: 标题, type: string }
-      - { name: summary, label: 摘要, type: text }
-      - { name: image, label: 主图, type: image }
-      - { name: story_html, label: 正文, type: rich-text }
-      - name: values
-        label: 价值卡片
-        type: list
-        item:
-          type: object
-          fields:
-            - { name: title, label: 标题, type: string }
-            - { name: text, label: 描述, type: text }
-            - { name: sort_order, label: 排序号, type: number }
-      - name: actions
-        label: 顶部按钮
-        type: object
-        fields:
-          - { name: primary_label, label: 主按钮文案, type: string }
-          - { name: primary_link, label: 主按钮链接, type: string }
-          - { name: secondary_label, label: 次按钮文案, type: string }
-          - { name: secondary_link, label: 次按钮链接, type: string }
-      - name: cta
-        label: 底部行动区
-        type: object
-        fields:
-          - { name: eyebrow, label: 眉题, type: string }
-          - { name: title, label: 标题, type: string }
-          - { name: text, label: 说明, type: text }
-          - { name: link, label: 链接, type: string }
-          - { name: label, label: 按钮文案, type: string }
-  - name: products
-    label: 产品集合
-    type: collection
-    path: _products
-    filename: "{primary}.md"
-    format: yaml-frontmatter
-    view:
-      fields: [title, category, price, featured, sort_order]
-    fields:
-      - { name: title, label: 名称, type: string, required: true }
-      - { name: category, label: 分类名, type: string, required: true }
-      - { name: category_key, label: 分类键, type: select, options: [journals, pens, stickers, storage], required: true }
-      - { name: price, label: 价格, type: string, required: true }
-      - { name: image, label: 产品图片, type: image, required: true }
-      - { name: featured, label: 首页推荐, type: boolean }
-      - { name: featured_rank, label: 首页精选排序号, type: number }
-      - { name: sort_order, label: 分类页排序号, type: number }
-      - { name: teaser, label: 摘要, type: text }
-      - { name: body, label: 正文, type: rich-text }
+          - { name: title, label: 商品名称, type: string, required: true }
+          - name: category_key
+            label: 所属分类
+            type: select
+            required: true
+            options:
+              values:
+                - { name: journals, label: 手账本 }
+                - { name: pens, label: 书写笔 }
+                - { name: stickers, label: 贴纸胶带 }
+                - { name: storage, label: 桌面收纳 }
+          - { name: price, label: 显示价格, type: string, required: true, description: "例如：¥88.00" }
+          - { name: image, label: 商品主图, type: image, required: true }
+          - { name: teaser, label: 卡片摘要, type: text, description: "显示在首页和产品页卡片上的简短介绍。" }
+          - name: featured
+            label: 首页精选
+            type: boolean
+            description: 打开后，这个商品会出现在首页精选区域。
+          - name: featured_rank
+            label: 首页精选排序
+            type: number
+            description: 只在勾选“首页精选”后生效。数字越小越靠前。
+            options:
+              min: 1
+              step: 1
+          - name: sort_order
+            label: 分类页排序
+            type: number
+            description: 同一分类里，数字越小越靠前。
+            options:
+              min: 1
+              step: 1
+          - { name: body, label: 商品详情正文, type: rich-text }

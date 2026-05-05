@@ -3,7 +3,7 @@ layout: default
 title: 产品系列
 permalink: /products/
 ---
-{% assign categories = site.data.home.categories | sort: "sort_order" %}
+{% assign categories = site.data.home.categories %}
 <section class="shell">
   <div class="page-hero card">
     <div class="meta-kicker">{{ site.data.products_page.hero.eyebrow }}</div>
@@ -35,7 +35,7 @@ permalink: /products/
     <article class="product-card">
       <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
       <div class="product-topline">
-        <div class="meta-kicker">{{ product.category }}</div>
+        <div class="meta-kicker">{{ item.name }}</div>
         <div class="price-badge">{{ product.price }}</div>
       </div>
       <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
