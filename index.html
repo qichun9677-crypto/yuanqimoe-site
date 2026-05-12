@@ -86,7 +86,7 @@ permalink: /
   <div class="featured-carousel" id="featuredProducts" data-carousel>
     <div class="featured-track">
       {% for product in featured_products %}
-      {% capture display_category %}{% include product-category-name.html slug=product.slug fallback=product.category %}{% endcapture %}
+      {% capture display_category %}{% include product-category-name.html slug=product.slug category_key=product.category_key fallback=product.category %}{% endcapture %}
       <article class="product-card featured-card">
         <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
         <div class="product-topline">

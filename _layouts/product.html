@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-{% capture display_category %}{% include product-category-name.html slug=page.slug fallback=page.category %}{% endcapture %}
+{% capture display_category %}{% include product-category-name.html slug=page.slug category_key=page.category_key fallback=page.category %}{% endcapture %}
 <section class="shell detail-layout page-hero-layout product-hero-layout">
   <div class="detail-media">
     <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">

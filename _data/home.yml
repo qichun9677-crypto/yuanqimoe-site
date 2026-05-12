@@ -14,18 +14,42 @@ explore:
   title: 按照你的日常节奏挑选喜欢的系列
   summary: 从灵感记录、顺手书写，到贴纸装饰和桌面收纳，慢慢挑一组最适合你的日常节奏。
 categories:
-  - name: 桌面收纳
+  - key: storage
+    name: 桌面收纳
     kicker: 收纳系列
     description: 让书签、笔套和透明小包都有自己的秩序感。
-  - name: 美工刀
+    button_label: 浏览系列
+    button_link: /products/#storage
+    products:
+      - product: storage-pouch
+      - product: sprout-bookmark
+  - key: journals
+    name: 美工刀
     kicker: 手账系列
     description: 轻盈封面、细腻纸感与柔和留白，适合记录灵感和日常节奏。
-  - name: 书写笔
+    button_label: 浏览系列
+    button_link: /products/#journals
+    products:
+      - product: sunset-journal
+      - product: mist-planner
+  - key: pens
+    name: 书写笔
     kicker: 书写系列
     description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
-  - name: 贴纸胶带
+    button_label: 浏览系列
+    button_link: /products/#pens
+    products:
+      - product: mint-pen-set
+      - product: cream-pen-case
+  - key: stickers
+    name: 贴纸胶带
     kicker: 贴纸系列
     description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
+    button_label: 浏览系列
+    button_link: /products/#stickers
+    products:
+      - product: washi-set
+      - product: cat-notes
 story:
   eyebrow: 品牌故事
   title: 文具不只是工具，也是安放心绪的小角落。

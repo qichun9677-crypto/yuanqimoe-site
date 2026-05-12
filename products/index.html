@@ -3,7 +3,7 @@ layout: default
 title: 产品系列
 permalink: /products/
 ---
-{% assign categories = site.data.product_categories.product_categories %}
+{% assign categories = site.data.home.categories %}
 <section class="shell">
   <div class="page-hero card">
     <div class="meta-kicker">{{ site.data.products_page.hero.eyebrow }}</div>
@@ -15,39 +15,57 @@ permalink: /products/
 <section class="shell section">
   <ul class="filter-list">
     {% for item in categories %}
-    <li><a href="#{{ item.slug }}">{{ item.name }}</a></li>
+    <li><a href="#{{ item.key }}">{{ item.name }}</a></li>
     {% endfor %}
   </ul>
 </section>
 
 {% for item in categories %}
-<section class="shell section" id="{{ item.slug }}">
+<section class="shell section" id="{{ item.key }}">
   <div class="section-header">
     <div>
-      <div class="meta-kicker">{{ item.eyebrow }}</div>
+      <div class="meta-kicker">{{ item.kicker }}</div>
       <h2 class="section-title">{{ item.name }}</h2>
     </div>
     <p class="section-copy">{{ item.description }}</p>
   </div>
   <div class="product-grid">
     {% if item.products and item.products.size > 0 %}
+      {% assign grouped_slugs = '' %}
       {% for entry in item.products %}
         {% assign product = site.products | where: "slug", entry.product | first %}
         {% if product %}
-        <article class="product-card">
-          <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
-          <div class="product-topline">
-            <div class="meta-kicker">{{ item.name }}</div>
-            <div class="price-badge">{{ product.price }}</div>
-          </div>
-          <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
-          <p class="product-meta">{{ product.teaser }}</p>
-        </article>
+          {% assign product_matches_category = false %}
+          {% if product.category_key == item.key %}
+            {% assign product_matches_category = true %}
+          {% elsif product.category_key == nil and product.category == item.name %}
+            {% assign product_matches_category = true %}
+          {% endif %}
+          {% if product_matches_category %}
+          {% capture grouped_slugs %}{{ grouped_slugs }}|{{ entry.product }}|{% endcapture %}
+          <article class="product-card">
+            <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
+            <div class="product-topline">
+              <div class="meta-kicker">{{ item.name }}</div>
+              <div class="price-badge">{{ product.price }}</div>
+            </div>
+            <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
+            <p class="product-meta">{{ product.teaser }}</p>
+          </article>
+          {% endif %}
         {% endif %}
       {% endfor %}
-    {% else %}
-      {% assign fallback_products = site.products | where: "category", item.name | sort: "sort_order" %}
+      {% assign fallback_products = site.products | sort: "sort_order" %}
       {% for product in fallback_products %}
+      {% capture slug_marker %}|{{ product.slug }}|{% endcapture %}
+      {% assign product_matches_category = false %}
+      {% if product.category_key == item.key %}
+        {% assign product_matches_category = true %}
+      {% elsif product.category == item.name %}
+        {% assign product_matches_category = true %}
+      {% endif %}
+      {% unless grouped_slugs contains slug_marker %}
+      {% if product_matches_category %}
       <article class="product-card">
         <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
         <div class="product-topline">
@@ -57,6 +75,29 @@ permalink: /products/
         <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
         <p class="product-meta">{{ product.teaser }}</p>
       </article>
+      {% endif %}
+      {% endunless %}
+      {% endfor %}
+    {% else %}
+      {% assign fallback_products = site.products | sort: "sort_order" %}
+      {% for product in fallback_products %}
+      {% assign product_matches_category = false %}
+      {% if product.category_key == item.key %}
+        {% assign product_matches_category = true %}
+      {% elsif product.category == item.name %}
+        {% assign product_matches_category = true %}
+      {% endif %}
+      {% if product_matches_category %}
+      <article class="product-card">
+        <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
+        <div class="product-topline">
+          <div class="meta-kicker">{{ item.name }}</div>
+          <div class="price-badge">{{ product.price }}</div>
+        </div>
+        <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
+        <p class="product-meta">{{ product.teaser }}</p>
+      </article>
+      {% endif %}
       {% endfor %}
     {% endif %}
   </div>

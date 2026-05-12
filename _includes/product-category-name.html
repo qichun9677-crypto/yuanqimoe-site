@@ -1,5 +1,11 @@
 {% assign display_category = include.fallback | default: '' %}
-{% for category_group in site.data.product_categories.product_categories %}
+{% if include.category_key %}
+  {% assign category_by_key = site.data.home.categories | where: "key", include.category_key | first %}
+  {% if category_by_key %}
+    {% assign display_category = category_by_key.name %}
+  {% endif %}
+{% endif %}
+{% for category_group in site.data.home.categories %}
   {% if category_group.products %}
     {% assign matched_product = category_group.products | where: "product", include.slug | first %}
     {% if matched_product %}

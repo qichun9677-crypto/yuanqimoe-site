@@ -1,6 +1,7 @@
 ---
 title: 奶油森林 笔套组合
 category: 书写笔
+category_key: pens
 price: "¥39.00"
 image: /assets/images/catalog-pen-case.jpg
 featured_rank: 0

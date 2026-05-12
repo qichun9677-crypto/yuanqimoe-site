@@ -1,0 +1,137 @@
+name: Sync Product Category Labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_data/home.yml"
+      - "_products/*.md"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-category-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Sync product category labels
+        run: |
+          python <<'PY'
+          import pathlib
+          import re
+          import yaml
+
+          root = pathlib.Path(".")
+          home_path = root / "_data" / "home.yml"
+          home = yaml.safe_load(home_path.read_text(encoding="utf-8"))
+
+          key_to_name = {}
+          name_to_key = {}
+          slug_to_key = {}
+          categories = home.get("categories", [])
+          for category in categories:
+            key = category.get("key")
+            name = category.get("name", "")
+            if key:
+              key_to_name[key] = name
+            if name:
+              name_to_key[name] = key
+            for item in category.get("products", []):
+              slug = item.get("product")
+              if slug and key:
+                slug_to_key[slug] = key
+
+          frontmatter_pattern = re.compile(r"^---\n(.*?)\n---\n(.*)$", re.S)
+          slug_to_target_key = {}
+          slug_to_sort_order = {}
+          home_changed = False
+
+          for product_file in (root / "_products").glob("*.md"):
+            text = product_file.read_text(encoding="utf-8")
+            match = frontmatter_pattern.match(text)
+            if not match:
+              continue
+
+            data = yaml.safe_load(match.group(1)) or {}
+            body = match.group(2)
+            slug = product_file.stem
+            target_key = None
+            if data.get("category") in name_to_key:
+              target_key = name_to_key[data.get("category")]
+            elif data.get("category_key") in key_to_name:
+              target_key = data.get("category_key")
+            elif slug in slug_to_key:
+              target_key = slug_to_key[slug]
+
+            if not target_key or target_key not in key_to_name:
+              continue
+
+            slug_to_target_key[slug] = target_key
+            slug_to_sort_order[slug] = data.get("sort_order", 9999)
+            target_category = key_to_name[target_key]
+            if data.get("category_key") == target_key and data.get("category") == target_category:
+              continue
+
+            data["category_key"] = target_key
+            data["category"] = target_category
+            new_frontmatter = yaml.safe_dump(data, allow_unicode=True, sort_keys=False).strip()
+            product_file.write_text(f"---\n{new_frontmatter}\n---\n{body}", encoding="utf-8")
+
+          for category in categories:
+            key = category.get("key")
+            if not key:
+              continue
+
+            current_entries = category.get("products", []) or []
+            current_slugs = [
+              item.get("product")
+              for item in current_entries
+              if isinstance(item, dict) and item.get("product")
+            ]
+
+            kept_slugs = [
+              slug for slug in current_slugs
+              if slug_to_target_key.get(slug) == key
+            ]
+            extra_slugs = sorted(
+              [
+                slug for slug, target_key in slug_to_target_key.items()
+                if target_key == key and slug not in kept_slugs
+              ],
+              key=lambda slug: (slug_to_sort_order.get(slug, 9999), slug),
+            )
+            new_entries = [{"product": slug} for slug in kept_slugs + extra_slugs]
+            if current_entries != new_entries:
+              category["products"] = new_entries
+              home_changed = True
+
+          if home_changed:
+            home_path.write_text(
+              yaml.safe_dump(home, allow_unicode=True, sort_keys=False),
+              encoding="utf-8",
+            )
+          PY
+
+      - name: Commit synced labels
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _products/*.md _data/home.yml
+          git commit -m "Sync product category labels"
+          git push

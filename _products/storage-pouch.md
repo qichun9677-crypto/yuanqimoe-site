@@ -1,6 +1,7 @@
 ---
 title: 萌芽 便携收纳套装
 category: 桌面收纳
+category_key: storage
 price: "¥26.00"
 image: /assets/images/product-accessories.jpg
 featured_rank: 4
