@@ -14,15 +14,6 @@ explore:
   title: 按照你的日常节奏挑选喜欢的系列
   summary: 从灵感记录、顺手书写，到贴纸装饰和桌面收纳，慢慢挑一组最适合你的日常节奏。
 categories:
-  - key: journals
-    name: 美工刀
-    kicker: 美工刀系列
-    description: 锋利内耐用
-    button_label: 浏览系列
-    button_link: /products/#journals
-    products:
-      - product: sunset-journal
-      - product: mist-planner
   - key: storage
     name: 桌面收纳
     kicker: 收纳系列
@@ -32,6 +23,15 @@ categories:
     products:
       - product: storage-pouch
       - product: sprout-bookmark
+  - key: journals
+    name: 美工刀
+    kicker: 美工刀系列
+    description: 锋利内耐用
+    button_label: 浏览系列
+    button_link: /products/#journals
+    products:
+      - product: sunset-journal
+      - product: mist-planner
   - key: pens
     name: 书写笔
     kicker: 书写系列
