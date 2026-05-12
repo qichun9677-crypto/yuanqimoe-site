@@ -2,7 +2,7 @@
 title: 黄铜幼芽 书签
 category: 桌面收纳
 category_key: storage
-price: "¥22.00"
+price: "22.00"
 image: /assets/images/catalog-bookmark.jpg
 featured_rank: 0
 sort_order: 8

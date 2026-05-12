@@ -2,7 +2,7 @@
 title: 夕阳漫步 手账本
 category: 美工刀
 category_key: journals
-price: "¥88.00"
+price: "88.00"
 image: /assets/images/story-journal.jpg
 featured_rank: 1
 sort_order: 1

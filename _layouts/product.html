@@ -11,7 +11,7 @@ layout: default
     <h1>{{ page.title }}</h1>
     <p class="lede">{{ page.teaser }}</p>
     <div class="detail-panels">
-      <div class="note">参考价格：{{ page.price }}</div>
+      <div class="note">参考价格：{% include product-price.html price=page.price %}</div>
     </div>
     <div class="button-row">
       <a class="button" href="{{ '/products/' | relative_url }}">返回产品页</a>

@@ -36,15 +36,46 @@ jobs:
 
           root = pathlib.Path(".")
           home_path = root / "_data" / "home.yml"
+          pages_path = root / ".pages.yml"
           home = yaml.safe_load(home_path.read_text(encoding="utf-8"))
 
           key_to_name = {}
           name_to_key = {}
           slug_to_key = {}
           categories = home.get("categories", [])
-          for category in categories:
-            key = category.get("key")
+          used_keys = {
+            category.get("key")
+            for category in categories
+            if category.get("key")
+          }
+          home_changed = False
+          for index, category in enumerate(categories, start=1):
             name = category.get("name", "")
+            key = category.get("key")
+            if not key:
+              base_key = re.sub(r"[^a-z0-9-]+", "-", name.lower()).strip("-")
+              if not base_key:
+                base_key = f"category-{index}"
+              key = base_key
+              suffix = 2
+              while key in used_keys:
+                key = f"{base_key}-{suffix}"
+                suffix += 1
+              category["key"] = key
+              used_keys.add(key)
+              home_changed = True
+            if not category.get("kicker") and name:
+              category["kicker"] = f"{name}系列"
+              home_changed = True
+            if not category.get("button_label"):
+              category["button_label"] = "浏览系列"
+              home_changed = True
+            if not category.get("button_link"):
+              category["button_link"] = f"/products/#{key}"
+              home_changed = True
+            if "products" not in category:
+              category["products"] = []
+              home_changed = True
             if key:
               key_to_name[key] = name
             if name:
@@ -57,7 +88,6 @@ jobs:
           frontmatter_pattern = re.compile(r"^---\n(.*?)\n---\n(.*)$", re.S)
           slug_to_target_key = {}
           slug_to_sort_order = {}
-          home_changed = False
 
           for product_file in (root / "_products").glob("*.md"):
             text = product_file.read_text(encoding="utf-8")
@@ -82,13 +112,23 @@ jobs:
             slug_to_target_key[slug] = target_key
             slug_to_sort_order[slug] = data.get("sort_order", 9999)
             target_category = key_to_name[target_key]
-            if data.get("category_key") == target_key and data.get("category") == target_category:
-              continue
+            product_changed = False
 
-            data["category_key"] = target_key
-            data["category"] = target_category
-            new_frontmatter = yaml.safe_dump(data, allow_unicode=True, sort_keys=False).strip()
-            product_file.write_text(f"---\n{new_frontmatter}\n---\n{body}", encoding="utf-8")
+            if data.get("category_key") != target_key:
+              data["category_key"] = target_key
+              product_changed = True
+            if data.get("category") != target_category:
+              data["category"] = target_category
+              product_changed = True
+            if data.get("price") is not None:
+              clean_price = str(data.get("price")).replace("¥", "").replace("￥", "").strip()
+              if data.get("price") != clean_price:
+                data["price"] = clean_price
+                product_changed = True
+
+            if product_changed:
+              new_frontmatter = yaml.safe_dump(data, allow_unicode=True, sort_keys=False).strip()
+              product_file.write_text(f"---\n{new_frontmatter}\n---\n{body}", encoding="utf-8")
 
           for category in categories:
             key = category.get("key")
@@ -123,6 +163,36 @@ jobs:
               yaml.safe_dump(home, allow_unicode=True, sort_keys=False),
               encoding="utf-8",
             )
+
+          def update_category_select(node, category_names):
+            if isinstance(node, dict):
+              if node.get("name") == "products" and node.get("type") == "collection":
+                changed = False
+                for field in node.get("fields", []):
+                  if field.get("name") == "category":
+                    desired_options = {
+                      "placeholder": "选择商品所属分类",
+                      "values": category_names,
+                    }
+                    if field.get("type") != "select":
+                      field["type"] = "select"
+                      changed = True
+                    if field.get("options") != desired_options:
+                      field["options"] = desired_options
+                      changed = True
+                return changed
+              return any(update_category_select(value, category_names) for value in node.values())
+            if isinstance(node, list):
+              return any(update_category_select(item, category_names) for item in node)
+            return False
+
+          pages = yaml.safe_load(pages_path.read_text(encoding="utf-8"))
+          category_names = [category.get("name") for category in categories if category.get("name")]
+          if update_category_select(pages, category_names):
+            pages_path.write_text(
+              yaml.safe_dump(pages, allow_unicode=True, sort_keys=False),
+              encoding="utf-8",
+            )
           PY
 
       - name: Commit synced labels
@@ -132,6 +202,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _products/*.md _data/home.yml
+          git add _products/*.md _data/home.yml .pages.yml
           git commit -m "Sync product category labels"
           git push

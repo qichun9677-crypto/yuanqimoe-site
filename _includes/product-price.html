@@ -1,0 +1,2 @@
+{% assign clean_price = include.price | default: '' | replace: '¥', '' | replace: '￥', '' | strip %}
+{% if clean_price != '' %}¥{{ clean_price }}{% endif %}

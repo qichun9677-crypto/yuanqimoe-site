@@ -47,7 +47,7 @@ permalink: /products/
             <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
             <div class="product-topline">
               <div class="meta-kicker">{{ item.name }}</div>
-              <div class="price-badge">{{ product.price }}</div>
+              <div class="price-badge">{% include product-price.html price=product.price %}</div>
             </div>
             <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
             <p class="product-meta">{{ product.teaser }}</p>
@@ -70,7 +70,7 @@ permalink: /products/
         <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
         <div class="product-topline">
           <div class="meta-kicker">{{ item.name }}</div>
-          <div class="price-badge">{{ product.price }}</div>
+          <div class="price-badge">{% include product-price.html price=product.price %}</div>
         </div>
         <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
         <p class="product-meta">{{ product.teaser }}</p>
@@ -92,7 +92,7 @@ permalink: /products/
         <a href="{{ product.url | relative_url }}"><img src="{{ product.image | relative_url }}" alt="{{ product.title }}"></a>
         <div class="product-topline">
           <div class="meta-kicker">{{ item.name }}</div>
-          <div class="price-badge">{{ product.price }}</div>
+          <div class="price-badge">{% include product-price.html price=product.price %}</div>
         </div>
         <h3><a href="{{ product.url | relative_url }}">{{ product.title }}</a></h3>
         <p class="product-meta">{{ product.teaser }}</p>

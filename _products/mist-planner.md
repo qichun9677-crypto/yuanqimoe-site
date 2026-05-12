@@ -2,7 +2,7 @@
 title: 晨雾格纹 计划手帐
 category: 美工刀
 category_key: journals
-price: "¥72.00"
+price: "72.00"
 image: /assets/images/hero-stationery.jpg
 featured_rank: 0
 sort_order: 2

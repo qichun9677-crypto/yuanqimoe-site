@@ -6,6 +6,9 @@ settings:
 media:
   input: assets/images/uploads
   output: /assets/images/uploads
+  rename: safe
+  categories: [image]
+  extensions: [jpg, jpeg, png, webp, gif]
 
 content:
   - name: basic_info
@@ -218,7 +221,7 @@ content:
     type: group
     items:
       - name: product_categories
-        label: 分类归类与排序
+        label: 分类新增、归类与排序
         type: file
         path: _data/home.yml
         format: yaml
@@ -228,7 +231,7 @@ content:
           - name: categories
             label: 商品分类
             type: object
-            description: 这里和“首页分类卡片”是同一份数据。你在这里调整顺序、名称或商品归类后，首页和产品页都会同步更新。
+            description: 这里和“首页分类卡片”是同一份数据。需要新增分类时，在这里添加分类；保存后刷新后台，新增分类会出现在商品编辑页的分类下拉框里。
             list:
               min: 1
               collapsible:
@@ -276,12 +279,19 @@ content:
           - { name: title, label: 商品名称, type: string, required: true }
           - name: category
             label: 所属分类
-            type: string
+            type: select
             required: true
-            description: 直接填写分类名称即可，例如：桌面收纳 / 美工刀 / 书写笔 / 贴纸胶带。保存后会自动同步到产品页和分类归类页。
+            description: 从已有分类中选择，避免手写出错。需要新分类时，先到“分类新增、归类与排序”里添加。
+            options:
+              placeholder: 选择商品所属分类
+              values:
+                - 美工刀
+                - 桌面收纳
+                - 书写笔
+                - 贴纸胶带
           - { name: category_key, label: false, type: string, hidden: true }
-          - { name: price, label: 显示价格, type: string, required: true, description: "例如：¥88.00" }
-          - { name: image, label: 商品主图, type: image, required: true }
+          - { name: price, label: 价格数字, type: string, required: true, description: "只填数字即可，例如：88.00。前台会自动显示人民币符号。" }
+          - { name: image, label: 商品主图, type: image, required: true, description: "点击 Upload 上传新图片，或点 Select 从媒体库选择已上传图片。" }
           - { name: teaser, label: 卡片摘要, type: text, description: "显示在首页和产品页卡片上的简短介绍。" }
           - name: featured_rank
             label: 首页精选顺序（0=不展示）

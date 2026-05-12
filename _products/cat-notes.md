@@ -2,7 +2,7 @@
 title: 猫咪留言 便签组合
 category: 贴纸胶带
 category_key: stickers
-price: "¥18.00"
+price: "18.00"
 image: /assets/images/catalog-sticky-notes.jpg
 featured_rank: 0
 sort_order: 6
