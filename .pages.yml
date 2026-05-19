@@ -128,52 +128,6 @@ content:
         label: 摘要
         type: text
         description: 这里是分类卡片上方的整段说明。
-    - name: categories
-      label: 首页分类卡片
-      type: object
-      description: 这里是首页分类和产品分类的同一份内容。你在这里调整顺序、名称和说明后，首页前台和产品分类页会一起更新。
-      list:
-        min: 1
-        collapsible:
-          collapsed: true
-          summary: '{name}'
-      fields:
-      - name: key
-        label: false
-        type: string
-        hidden: true
-      - name: name
-        label: 分类名称
-        type: string
-      - name: kicker
-        label: 卡片小标题
-        type: string
-      - name: description
-        label: 分类说明
-        type: text
-      - name: button_label
-        label: 按钮文字
-        type: string
-      - name: button_link
-        label: 按钮链接
-        type: string
-        description: 例如：/products/ 或 /about/
-      - name: products
-        label: 当前分类商品
-        type: object
-        description: 这里的商品顺序会同步影响产品页该分类下的展示顺序；如果暂时不改，保持默认即可。
-        list:
-          collapsible:
-            collapsed: true
-            summary: '{product}'
-        fields:
-        - name: product
-          label: 选择商品
-          type: reference
-          options:
-            collection: products
-            value: '{slug}'
-            label: '{title}'
     - name: story
       label: 品牌故事区块
       type: object
@@ -328,57 +282,68 @@ content:
   items:
   - name: product_categories
     label: 分类新增、归类与排序
-    type: file
-    path: _data/home.yml
-    format: yaml
+    type: collection
+    path: _product_categories
+    filename:
+      template: '{primary}.md'
+      field: false
+    format: yaml-frontmatter
     operations:
-      delete: false
+      rename: false
+    view:
+      primary: title
+      sort: sort_order
+      order: asc
+      fields:
+      - title
+      - sort_order
     fields:
-    - name: categories
-      label: 商品分类
-      type: object
-      description: 这里和“首页分类卡片”是同一份数据。需要新增分类时，在这里添加分类；保存后刷新后台，新增分类会出现在商品编辑页的分类下拉框里。
-      list:
+    - name: title
+      label: 分类名称
+      type: string
+      required: true
+      description: 这里填写给顾客看的分类名称，例如：桌面收纳。
+    - name: key
+      label: false
+      type: string
+      hidden: true
+    - name: sort_order
+      label: 分类排序
+      type: number
+      description: 数字越小越靠前；新增分类可填 5、6、7。
+      options:
         min: 1
+        step: 1
+    - name: kicker
+      label: 卡片小标题
+      type: string
+      description: 显示在分类卡片上方的小字，例如：收纳系列。
+    - name: description
+      label: 分类说明
+      type: text
+    - name: button_label
+      label: 按钮文字
+      type: string
+    - name: button_link
+      label: 按钮链接
+      type: string
+      description: 一般不用改，系统会按分类自动补齐。
+    - name: products
+      label: 当前分类下的商品
+      type: object
+      description: 这里用于调整这个分类下的商品顺序；普通新增商品时，只要在商品资料库里选择分类即可。
+      list:
         collapsible:
           collapsed: true
-          summary: '{name}'
+          summary: '{product}'
       fields:
-      - name: key
-        label: false
-        type: string
-        hidden: true
-      - name: name
-        label: 分类名称
-        type: string
-      - name: kicker
-        label: 卡片小标题
-        type: string
-      - name: description
-        label: 分类说明
-        type: text
-      - name: button_label
-        label: 按钮文字
-        type: string
-      - name: button_link
-        label: 按钮链接
-        type: string
-      - name: products
-        label: 当前分类下的商品
-        type: object
-        description: 点击“添加条目”即可把商品放进当前分类；拖动条目可调整这个分类下的商品展示顺序。
-        list:
-          collapsible:
-            collapsed: true
-            summary: '{product}'
-        fields:
-        - name: product
-          label: 选择商品
-          type: reference
-          options:
-            collection: products
-            value: '{slug}'
-            label: '{title}'
+      - name: product
+        label: 选择商品
+        type: reference
+        options:
+          collection: products
+          value: '{slug}'
+          label: '{title}'
   - name: products
     label: 商品资料库
     type: collection
@@ -403,19 +368,16 @@ content:
       label: 商品名称
       type: string
       required: true
-    - name: category
-      label: 所属分类
-      type: select
-      required: true
-      description: 从已有分类中选择，避免手写出错。需要新分类时，先到“分类新增、归类与排序”里添加。
-      options:
-        placeholder: 选择商品所属分类
-        values:
-        - 桌面收纳
-        - 美工刀
-        - 书写笔
-        - 贴纸胶带
     - name: category_key
+      label: 所属分类
+      type: reference
+      required: true
+      description: 从已有分类中选择，避免手写出错；需要新分类时，先到“分类新增、归类与排序”点击 Add an entry。
+      options:
+        collection: product_categories
+        value: '{slug}'
+        label: '{title}'
+    - name: category
       label: false
       type: string
       hidden: true

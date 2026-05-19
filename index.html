@@ -4,7 +4,7 @@ title: 首页
 permalink: /
 ---
 {% assign featured_products = site.products | sort: "featured_rank" %}
-{% assign categories = site.data.home.categories %}
+{% assign categories = site.product_categories | sort: "sort_order" %}
 <section class="shell hero">
   <div class="card hero-copy">
     <span class="eyebrow">{{ site.data.home.hero.eyebrow }}</span>
@@ -36,6 +36,8 @@ permalink: /
   </div>
   <div class="feature-grid">
     {% for item in categories %}
+    {% assign category_name = item.title | default: item.name %}
+    {% assign category_key = item.key | default: item.slug %}
     {% assign tone_index = forloop.index0 | modulo: 4 %}
     {% assign card_tone = 'default' %}
     {% if tone_index == 0 %}{% assign card_tone = 'blush' %}{% endif %}
@@ -43,9 +45,13 @@ permalink: /
     {% if tone_index == 2 %}{% assign card_tone = 'mint' %}{% endif %}
     <article class="feature-card" data-tone="{{ card_tone }}">
       <div class="meta-kicker">{{ item.kicker }}</div>
-      <h3>{{ item.name }}</h3>
+      <h3>{{ category_name }}</h3>
       <p class="meta-copy">{{ item.description }}</p>
-      <a class="button button-secondary" href="{{ item.button_link | relative_url }}">{{ item.button_label }}</a>
+      {% assign category_link = item.button_link %}
+      {% unless category_link %}
+        {% capture category_link %}/products/#{{ category_key }}{% endcapture %}
+      {% endunless %}
+      <a class="button button-secondary" href="{{ category_link | relative_url }}">{{ item.button_label }}</a>
     </article>
     {% endfor %}
   </div>

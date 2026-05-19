@@ -8,6 +8,8 @@ collections:
   products:
     output: true
     permalink: /products/:name/
+  product_categories:
+    output: false
 defaults:
   - scope:
       path: ""

@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "_data/home.yml"
+      - "_product_categories/*.md"
       - "_products/*.md"
+      - "_data/home.yml"
 
 permissions:
   contents: write
@@ -27,7 +28,7 @@ jobs:
       - name: Install PyYAML
         run: pip install pyyaml
 
-      - name: Sync product category labels
+      - name: Sync category collection and product labels
         run: |
           python <<'PY'
           import pathlib
@@ -35,113 +36,121 @@ jobs:
           import yaml
 
           root = pathlib.Path(".")
+          category_dir = root / "_product_categories"
+          product_dir = root / "_products"
           home_path = root / "_data" / "home.yml"
-          pages_path = root / ".pages.yml"
-          home = yaml.safe_load(home_path.read_text(encoding="utf-8"))
+          frontmatter_pattern = re.compile(r"^---\n(.*?)\n---\n(.*)$", re.S)
 
-          key_to_name = {}
-          name_to_key = {}
-          slug_to_key = {}
-          categories = home.get("categories", [])
-          used_keys = {
-            category.get("key")
-            for category in categories
-            if category.get("key")
-          }
-          home_changed = False
-          for index, category in enumerate(categories, start=1):
-            name = category.get("name", "")
-            key = category.get("key")
-            if not key:
-              base_key = re.sub(r"[^a-z0-9-]+", "-", name.lower()).strip("-")
-              if not base_key:
-                base_key = f"category-{index}"
-              key = base_key
+          def read_frontmatter(path):
+            text = path.read_text(encoding="utf-8")
+            match = frontmatter_pattern.match(text)
+            if not match:
+              return {}, text
+            return yaml.safe_load(match.group(1)) or {}, match.group(2)
+
+          def write_frontmatter(path, data, body):
+            text = yaml.safe_dump(data, allow_unicode=True, sort_keys=False).strip()
+            path.write_text(f"---\n{text}\n---\n{body}", encoding="utf-8")
+
+          def slugify(value, fallback):
+            value = str(value or "").strip().lower()
+            slug = re.sub(r"[^a-z0-9\u4e00-\u9fff-]+", "-", value).strip("-")
+            return slug or fallback
+
+          categories = []
+          used_keys = set()
+          for index, category_file in enumerate(sorted(category_dir.glob("*.md")), start=1):
+            data, body = read_frontmatter(category_file)
+            title = data.get("title") or data.get("name") or category_file.stem
+            key = data.get("key") or category_file.stem or slugify(title, f"category-{index}")
+            key = str(key).strip()
+            if key in used_keys:
+              base_key = key
               suffix = 2
               while key in used_keys:
                 key = f"{base_key}-{suffix}"
                 suffix += 1
-              category["key"] = key
-              used_keys.add(key)
-              home_changed = True
-            if not category.get("kicker") and name:
-              category["kicker"] = f"{name}系列"
-              home_changed = True
-            if not category.get("button_label"):
-              category["button_label"] = "浏览系列"
-              home_changed = True
-            if not category.get("button_link"):
-              category["button_link"] = f"/products/#{key}"
-              home_changed = True
-            if "products" not in category:
-              category["products"] = []
-              home_changed = True
-            if key:
-              key_to_name[key] = name
-            if name:
-              name_to_key[name] = key
-            for item in category.get("products", []):
-              slug = item.get("product")
-              if slug and key:
-                slug_to_key[slug] = key
+            used_keys.add(key)
 
-          frontmatter_pattern = re.compile(r"^---\n(.*?)\n---\n(.*)$", re.S)
+            changed = False
+            defaults = {
+              "title": title,
+              "key": key,
+              "sort_order": data.get("sort_order") or index,
+              "kicker": data.get("kicker") or f"{title}系列",
+              "description": data.get("description") or "",
+              "button_label": data.get("button_label") or "浏览系列",
+              "button_link": data.get("button_link") or f"/products/#{key}",
+              "products": data.get("products") or [],
+            }
+            for field, value in defaults.items():
+              if data.get(field) != value:
+                data[field] = value
+                changed = True
+            if "name" in data:
+              data.pop("name")
+              changed = True
+            if changed:
+              write_frontmatter(category_file, data, body)
+
+            categories.append({
+              "file": category_file,
+              "data": data,
+              "body": body,
+              "key": key,
+              "title": title,
+            })
+
+          key_to_name = {category["key"]: category["title"] for category in categories}
+          name_to_key = {category["title"]: category["key"] for category in categories}
+          slug_to_key = {}
+          for category in categories:
+            for item in category["data"].get("products", []) or []:
+              if isinstance(item, dict) and item.get("product"):
+                slug_to_key[item["product"]] = category["key"]
+
           slug_to_target_key = {}
           slug_to_sort_order = {}
-
-          for product_file in (root / "_products").glob("*.md"):
-            text = product_file.read_text(encoding="utf-8")
-            match = frontmatter_pattern.match(text)
-            if not match:
-              continue
-
-            data = yaml.safe_load(match.group(1)) or {}
-            body = match.group(2)
+          for product_file in sorted(product_dir.glob("*.md")):
+            data, body = read_frontmatter(product_file)
             slug = product_file.stem
             target_key = None
-            if data.get("category") in name_to_key:
-              target_key = name_to_key[data.get("category")]
-            elif data.get("category_key") in key_to_name:
+            if data.get("category_key") in key_to_name:
               target_key = data.get("category_key")
+            elif data.get("category") in name_to_key:
+              target_key = name_to_key[data.get("category")]
             elif slug in slug_to_key:
               target_key = slug_to_key[slug]
 
-            if not target_key or target_key not in key_to_name:
-              continue
-
-            slug_to_target_key[slug] = target_key
-            slug_to_sort_order[slug] = data.get("sort_order", 9999)
-            target_category = key_to_name[target_key]
-            product_changed = False
-
-            if data.get("category_key") != target_key:
-              data["category_key"] = target_key
-              product_changed = True
-            if data.get("category") != target_category:
-              data["category"] = target_category
-              product_changed = True
+            changed = False
             if data.get("price") is not None:
               clean_price = str(data.get("price")).replace("¥", "").replace("￥", "").strip()
               if data.get("price") != clean_price:
                 data["price"] = clean_price
-                product_changed = True
+                changed = True
 
-            if product_changed:
-              new_frontmatter = yaml.safe_dump(data, allow_unicode=True, sort_keys=False).strip()
-              product_file.write_text(f"---\n{new_frontmatter}\n---\n{body}", encoding="utf-8")
+            if target_key and target_key in key_to_name:
+              slug_to_target_key[slug] = target_key
+              slug_to_sort_order[slug] = data.get("sort_order", 9999)
+              if data.get("category_key") != target_key:
+                data["category_key"] = target_key
+                changed = True
+              if data.get("category") != key_to_name[target_key]:
+                data["category"] = key_to_name[target_key]
+                changed = True
+
+            if changed:
+              write_frontmatter(product_file, data, body)
 
           for category in categories:
-            key = category.get("key")
-            if not key:
-              continue
-
-            current_entries = category.get("products", []) or []
+            key = category["key"]
+            data = category["data"]
+            current_entries = data.get("products", []) or []
             current_slugs = [
               item.get("product")
               for item in current_entries
               if isinstance(item, dict) and item.get("product")
             ]
-
             kept_slugs = [
               slug for slug in current_slugs
               if slug_to_target_key.get(slug) == key
@@ -155,44 +164,29 @@ jobs:
             )
             new_entries = [{"product": slug} for slug in kept_slugs + extra_slugs]
             if current_entries != new_entries:
-              category["products"] = new_entries
-              home_changed = True
+              data["products"] = new_entries
+              write_frontmatter(category["file"], data, category["body"])
 
-          if home_changed:
-            home_path.write_text(
-              yaml.safe_dump(home, allow_unicode=True, sort_keys=False),
-              encoding="utf-8",
-            )
-
-          def update_category_select(node, category_names):
-            if isinstance(node, dict):
-              if node.get("name") == "products" and node.get("type") == "collection":
-                changed = False
-                for field in node.get("fields", []):
-                  if field.get("name") == "category":
-                    desired_options = {
-                      "placeholder": "选择商品所属分类",
-                      "values": category_names,
-                    }
-                    if field.get("type") != "select":
-                      field["type"] = "select"
-                      changed = True
-                    if field.get("options") != desired_options:
-                      field["options"] = desired_options
-                      changed = True
-                return changed
-              return any(update_category_select(value, category_names) for value in node.values())
-            if isinstance(node, list):
-              return any(update_category_select(item, category_names) for item in node)
-            return False
-
-          pages = yaml.safe_load(pages_path.read_text(encoding="utf-8"))
-          category_names = [category.get("name") for category in categories if category.get("name")]
-          if update_category_select(pages, category_names):
-            pages_path.write_text(
-              yaml.safe_dump(pages, allow_unicode=True, sort_keys=False),
-              encoding="utf-8",
-            )
+          if home_path.exists():
+            home = yaml.safe_load(home_path.read_text(encoding="utf-8")) or {}
+            mirrored_categories = []
+            for category in sorted(categories, key=lambda item: item["data"].get("sort_order", 9999)):
+              data = category["data"]
+              mirrored_categories.append({
+                "key": data.get("key"),
+                "name": data.get("title"),
+                "kicker": data.get("kicker"),
+                "description": data.get("description"),
+                "button_label": data.get("button_label"),
+                "button_link": data.get("button_link"),
+                "products": data.get("products") or [],
+              })
+            if home.get("categories") != mirrored_categories:
+              home["categories"] = mirrored_categories
+              home_path.write_text(
+                yaml.safe_dump(home, allow_unicode=True, sort_keys=False),
+                encoding="utf-8",
+              )
           PY
 
       - name: Commit synced labels
@@ -202,6 +196,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _products/*.md _data/home.yml .pages.yml
+          git add _product_categories/*.md _products/*.md _data/home.yml
           git commit -m "Sync product category labels"
           git push

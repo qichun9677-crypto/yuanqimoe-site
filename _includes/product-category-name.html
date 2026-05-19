@@ -1,15 +1,20 @@
 {% assign display_category = include.fallback | default: '' %}
+{% assign categories = site.product_categories | sort: "sort_order" %}
 {% if include.category_key %}
-  {% assign category_by_key = site.data.home.categories | where: "key", include.category_key | first %}
+  {% assign category_by_key = categories | where: "key", include.category_key | first %}
+  {% unless category_by_key %}
+    {% assign category_by_key = categories | where: "slug", include.category_key | first %}
+  {% endunless %}
   {% if category_by_key %}
-    {% assign display_category = category_by_key.name %}
+    {% assign display_category = category_by_key.title | default: category_by_key.name %}
   {% endif %}
 {% endif %}
-{% for category_group in site.data.home.categories %}
+{% for category_group in categories %}
+  {% assign category_name = category_group.title | default: category_group.name %}
   {% if category_group.products %}
     {% assign matched_product = category_group.products | where: "product", include.slug | first %}
     {% if matched_product %}
-      {% assign display_category = category_group.name %}
+      {% assign display_category = category_name %}
     {% endif %}
   {% endif %}
 {% endfor %}
