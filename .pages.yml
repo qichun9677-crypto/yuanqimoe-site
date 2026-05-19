@@ -342,6 +342,7 @@ content:
           collection: products
           value: '{slug}'
           label: '{title}'
+          search: 'title,teaser,category'
   - name: products
     label: 商品资料库
     type: collection
@@ -371,8 +372,9 @@ content:
       description: 从已有分类中选择，避免手写出错；需要新分类时，先到“分类新增、归类与排序”点击 Add an entry。
       options:
         collection: product_categories
-        value: '{slug}'
+        value: '{key}'
         label: '{title}'
+        search: 'title,kicker,description'
     - name: category
       label: false
       type: string
