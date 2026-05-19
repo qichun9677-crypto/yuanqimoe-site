@@ -1,0 +1,191 @@
+---
+layout: default
+title: 图片压缩工具
+permalink: /image-tool/
+---
+<section class="shell">
+  <div class="page-hero card tool-hero">
+    <div>
+      <div class="meta-kicker">Image Helper</div>
+      <h1>商品图片压缩工具</h1>
+      <p class="page-intro">如果 Pages CMS 上传图片提示 413，通常是图片太大。先在这里压缩，再回后台上传压缩后的图片。</p>
+    </div>
+    <div class="note">
+      建议上传到后台前控制在 2MB 以下。JPG、PNG、WebP 都可以处理，输出默认转成 JPG。
+    </div>
+  </div>
+</section>
+
+<section class="shell section">
+  <div class="tool-layout">
+    <div class="page-card tool-panel">
+      <label class="tool-upload">
+        <input id="imageInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+        <span>选择要压缩的商品图片</span>
+      </label>
+
+      <div class="tool-controls">
+        <label>
+          最大边长
+          <select id="maxSize">
+            <option value="1200">1200px，适合商品卡片</option>
+            <option value="1600" selected>1600px，清晰且容易上传</option>
+            <option value="2000">2000px，更清晰但文件更大</option>
+          </select>
+        </label>
+        <label>
+          清晰度
+          <input id="quality" type="range" min="0.55" max="0.92" step="0.01" value="0.82">
+          <span id="qualityValue">82%</span>
+        </label>
+        <label>
+          输出格式
+          <select id="format">
+            <option value="image/jpeg" selected>JPG，推荐</option>
+            <option value="image/webp">WebP，更小</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="admin-actions">
+        <button class="button" id="compressButton" type="button" disabled>开始压缩</button>
+        <a class="button button-secondary is-disabled" id="downloadButton" href="#" download>下载压缩图</a>
+      </div>
+      <p class="tool-status" id="toolStatus">先选择图片。</p>
+    </div>
+
+    <div class="page-card tool-preview">
+      <div>
+        <h2>预览</h2>
+        <p class="admin-copy">压缩成功后，请下载图片，再回 Pages CMS 的商品主图位置点击 Upload 上传。</p>
+      </div>
+      <img id="previewImage" alt="压缩后的商品图预览">
+      <div class="tool-result" id="toolResult"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var input = document.getElementById("imageInput");
+    var maxSize = document.getElementById("maxSize");
+    var quality = document.getElementById("quality");
+    var qualityValue = document.getElementById("qualityValue");
+    var format = document.getElementById("format");
+    var compressButton = document.getElementById("compressButton");
+    var downloadButton = document.getElementById("downloadButton");
+    var status = document.getElementById("toolStatus");
+    var preview = document.getElementById("previewImage");
+    var result = document.getElementById("toolResult");
+    var currentFile = null;
+    var objectUrl = "";
+
+    function formatBytes(bytes) {
+      if (!bytes) {
+        return "0 KB";
+      }
+      if (bytes < 1024 * 1024) {
+        return Math.round(bytes / 1024) + " KB";
+      }
+      return (bytes / 1024 / 1024).toFixed(2) + " MB";
+    }
+
+    function safeName(name, extension) {
+      var base = (name || "product-image").replace(/\.[^.]+$/, "");
+      base = base.replace(/[^\w\u4e00-\u9fa5-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+      return (base || "product-image") + "-compressed." + extension;
+    }
+
+    function loadImage(file) {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(file);
+        var image = new Image();
+        image.onload = function () {
+          URL.revokeObjectURL(url);
+          resolve(image);
+        };
+        image.onerror = function () {
+          URL.revokeObjectURL(url);
+          reject(new Error("图片读取失败，请换 JPG、PNG 或 WebP 图片。"));
+        };
+        image.src = url;
+      });
+    }
+
+    function canvasToBlob(canvas, mime, imageQuality) {
+      return new Promise(function (resolve) {
+        canvas.toBlob(resolve, mime, imageQuality);
+      });
+    }
+
+    async function compressImage() {
+      if (!currentFile) {
+        return;
+      }
+      compressButton.disabled = true;
+      status.textContent = "正在压缩，请稍等...";
+      result.textContent = "";
+      try {
+        var image = await loadImage(currentFile);
+        var longest = Number(maxSize.value);
+        var ratio = Math.min(1, longest / Math.max(image.width, image.height));
+        var width = Math.max(1, Math.round(image.width * ratio));
+        var height = Math.max(1, Math.round(image.height * ratio));
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = width;
+        canvas.height = height;
+        context.fillStyle = "#fffaf7";
+        context.fillRect(0, 0, width, height);
+        context.drawImage(image, 0, 0, width, height);
+
+        var mime = format.value;
+        var imageQuality = Number(quality.value);
+        var blob = await canvasToBlob(canvas, mime, imageQuality);
+        while (blob && blob.size > 2 * 1024 * 1024 && imageQuality > 0.56) {
+          imageQuality = Math.max(0.55, imageQuality - 0.08);
+          blob = await canvasToBlob(canvas, mime, imageQuality);
+        }
+        if (!blob) {
+          throw new Error("压缩失败，请换一张图片再试。");
+        }
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl);
+        }
+        objectUrl = URL.createObjectURL(blob);
+        var extension = mime === "image/webp" ? "webp" : "jpg";
+        preview.src = objectUrl;
+        downloadButton.href = objectUrl;
+        downloadButton.download = safeName(currentFile.name, extension);
+        downloadButton.classList.remove("is-disabled");
+        status.textContent = "压缩完成，可以下载后回后台上传。";
+        result.textContent = "原图 " + formatBytes(currentFile.size) + " -> 压缩后 " + formatBytes(blob.size) + "，尺寸 " + width + " x " + height + "。";
+      } catch (error) {
+        status.textContent = error.message;
+      } finally {
+        compressButton.disabled = false;
+      }
+    }
+
+    input.addEventListener("change", function () {
+      currentFile = input.files && input.files[0] ? input.files[0] : null;
+      downloadButton.classList.add("is-disabled");
+      downloadButton.removeAttribute("href");
+      preview.removeAttribute("src");
+      result.textContent = "";
+      if (!currentFile) {
+        status.textContent = "先选择图片。";
+        compressButton.disabled = true;
+        return;
+      }
+      status.textContent = "已选择：" + currentFile.name + "，原图大小 " + formatBytes(currentFile.size) + "。";
+      compressButton.disabled = false;
+    });
+
+    quality.addEventListener("input", function () {
+      qualityValue.textContent = Math.round(Number(quality.value) * 100) + "%";
+    });
+
+    compressButton.addEventListener("click", compressImage);
+  })();
+</script>

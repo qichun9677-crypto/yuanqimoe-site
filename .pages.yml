@@ -388,7 +388,7 @@ content:
       label: 商品主图
       type: image
       required: true
-      description: 点击 Upload 上传新图片，或点 Select 从媒体库选择已上传图片。
+      description: 图片建议先压缩到 2MB 以下。若上传提示 413，请先打开 https://www.yuanqimoe.com/image-tool/ 压缩图片，再回到这里点 Upload 上传。
     - name: teaser
       label: 卡片摘要
       type: text
