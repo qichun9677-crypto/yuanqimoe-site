@@ -284,7 +284,7 @@ content:
     label: 分类新增、归类与排序
     type: collection
     path: _product_categories
-    filename: '{primary}.md'
+    filename: 'category-{year}{month}{day}{hour}{minute}{second}.md'
     format: yaml-frontmatter
     operations:
       rename: false
@@ -346,7 +346,7 @@ content:
     label: 商品资料库
     type: collection
     path: _products
-    filename: '{primary}.md'
+    filename: 'product-{year}{month}{day}{hour}{minute}{second}.md'
     format: yaml-frontmatter
     operations:
       rename: false
