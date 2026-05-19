@@ -56,7 +56,8 @@ categories:
   description: 阅读架
   button_label: 浏览系列
   button_link: /products/#category-20260519154929
-  products: []
+  products:
+  - product: product-20260519161942
 story:
   eyebrow: 品牌故事
   title: 文具不只是工具，也是安放心绪的小角落。
