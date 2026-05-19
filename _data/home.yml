@@ -14,54 +14,61 @@ explore:
   title: 按照你的日常节奏挑选喜欢的系列
   summary: 从灵感记录、顺手书写，到贴纸装饰和桌面收纳，慢慢挑一组最适合你的日常节奏。
 categories:
-  - key: storage
-    name: 桌面收纳
-    kicker: 收纳系列
-    description: 让书签、笔套和透明小包都有自己的秩序感。
-    button_label: 浏览系列
-    button_link: /products/#storage
-    products:
-      - product: storage-pouch
-      - product: sprout-bookmark
-  - key: journals
-    name: 美工刀
-    kicker: 美工刀系列
-    description: 锋利内耐用
-    button_label: 浏览系列
-    button_link: /products/#journals
-    products:
-      - product: sunset-journal
-      - product: mist-planner
-  - key: pens
-    name: 书写笔
-    kicker: 书写系列
-    description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
-    button_label: 浏览系列
-    button_link: /products/#pens
-    products:
-      - product: mint-pen-set
-      - product: cream-pen-case
-  - key: stickers
-    name: 贴纸胶带
-    kicker: 贴纸系列
-    description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
-    button_label: 浏览系列
-    button_link: /products/#stickers
-    products:
-      - product: washi-set
-      - product: cat-notes
+- key: storage
+  name: 桌面收纳
+  kicker: 收纳系列
+  description: 让书签、笔套和透明小包都有自己的秩序感。
+  button_label: 浏览系列
+  button_link: /products/#storage
+  products:
+  - product: storage-pouch
+  - product: sprout-bookmark
+- key: journals
+  name: 美工刀
+  kicker: 美工刀系列
+  description: 锋利内耐用
+  button_label: 浏览系列
+  button_link: /products/#journals
+  products:
+  - product: sunset-journal
+  - product: mist-planner
+- key: pens
+  name: 书写笔
+  kicker: 书写系列
+  description: 从柔和渐变到细节配件，围绕顺滑书写和礼物感体验展开。
+  button_label: 浏览系列
+  button_link: /products/#pens
+  products:
+  - product: mint-pen-set
+  - product: cream-pen-case
+- key: stickers
+  name: 贴纸胶带
+  kicker: 贴纸系列
+  description: 用图案和色块给计划页、包装和桌面笔记留下轻轻的情绪点缀。
+  button_label: 浏览系列
+  button_link: /products/#stickers
+  products:
+  - product: washi-set
+  - product: cat-notes
+- key: category-20260519154929
+  name: 阅读架
+  kicker: 收纳系列
+  description: 阅读架
+  button_label: 浏览系列
+  button_link: /products/#category-20260519154929
+  products: []
 story:
   eyebrow: 品牌故事
   title: 文具不只是工具，也是安放心绪的小角落。
   summary: 我们希望把温柔的纸感、顺手的书写触感和有秩序的小收纳，重新带回每一天的学习、工作与生活片刻。
   image: /assets/images/story-journal.jpg
 stats:
-  - value: 8+
-    label: 已上架系列样品
-  - value: 8类
-    label: 当前主打分类
-  - value: 24h
-    label: 记录灵感不停歇
+- value: 8+
+  label: 已上架系列样品
+- value: 8类
+  label: 当前主打分类
+- value: 24h
+  label: 记录灵感不停歇
 featured:
   title: 元气精选推荐
   summary: 精选几款人气单品，左右滑动继续看看更多温柔日常好物。
